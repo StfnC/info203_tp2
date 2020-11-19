@@ -2,6 +2,8 @@ package ca.qc.bdeb.info203.tp2;
 
 import org.newdawn.slick.*;
 
+//test
+
 public class Jeu extends BasicGame {
 
     private static final int WIDTH = 1440;
