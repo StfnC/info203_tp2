@@ -2,8 +2,6 @@ package ca.qc.bdeb.info203.tp2;
 
 import org.newdawn.slick.*;
 
-//test
-
 public class Jeu extends BasicGame {
 
     private static final int WIDTH = 1440;
@@ -24,7 +22,7 @@ public class Jeu extends BasicGame {
     }
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
-        background = new Image("res/background.png");
+        background = new Image("res/background.png").getScaledCopy(WIDTH, HEIGHT);
     }
 
     @Override
@@ -34,6 +32,6 @@ public class Jeu extends BasicGame {
 
     @Override
     public void render(GameContainer gameContainer, Graphics graphics) throws SlickException {
-        background.draw(0, 0, WIDTH, HEIGHT);
+        background.draw(0, 0);
     }
 }
