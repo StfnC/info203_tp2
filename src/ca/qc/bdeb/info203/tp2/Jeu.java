@@ -10,6 +10,10 @@ public class Jeu extends BasicGame {
 
     private static final int WIDTH = 1024;
     private static final int HEIGHT = 800;
+    private static final int vitesseVaisseau = 7;
+    private static final int vitesseLaser = 4;
+    private static final int vitesseAsteroide = 2;
+
 
     private ArrayList<Entite> entiteListe;
     private Image background;
@@ -48,15 +52,15 @@ public class Jeu extends BasicGame {
     @Override
     public void update(GameContainer gameContainer, int delta) throws SlickException {
         if (vaisseauMoving){
-            vaisseau.mouvementEntite(directionVaisseau, delta);
+            vaisseau.mouvementEntite(directionVaisseau, delta, vitesseVaisseau);
         }
 
         for (int i = 1; i < entiteListe.size(); i++) {
             Entite currentEntity = entiteListe.get(i);
             if (currentEntity instanceof Asteroide){
-
+                //currentEntity.mouvementEntite();
             }else if (currentEntity instanceof Laser){
-                currentEntity.mouvementEntite(UP, delta);
+                currentEntity.mouvementEntite(UP, delta, vitesseLaser);
             }
         }
     }

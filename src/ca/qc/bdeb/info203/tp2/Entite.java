@@ -13,7 +13,7 @@ public abstract class Entite {
     protected Image image;
     protected boolean detruire = false;
 
-    public abstract void mouvementEntite(dir dir, int delta);
+    public abstract void mouvementEntite(dir dir, int delta, int vitesse);
 
     /**
      * Constructeur d'Entite avec image sur le disque

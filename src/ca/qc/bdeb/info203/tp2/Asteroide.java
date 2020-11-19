@@ -4,7 +4,7 @@ import org.newdawn.slick.SpriteSheet;
 
 public class Asteroide extends Entite{
     @Override
-    public void mouvementEntite(dir dir, int delta) {
+    public void mouvementEntite(dir dir, int delta, int vitesse) {
 
     }
 
