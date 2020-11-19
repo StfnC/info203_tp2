@@ -6,6 +6,7 @@ public class Jeu extends BasicGame {
 
     private static final int WIDTH = 1440;
     private static final int HEIGHT = 900;
+    private Image background = null;
 
     public static void main(String[] args) throws SlickException {
         AppGameContainer jeu = new AppGameContainer(new Jeu("Jeu"));
@@ -21,7 +22,7 @@ public class Jeu extends BasicGame {
     }
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
-
+        background = new Image("res/background.png");
     }
 
     @Override
@@ -31,6 +32,6 @@ public class Jeu extends BasicGame {
 
     @Override
     public void render(GameContainer gameContainer, Graphics graphics) throws SlickException {
-
+        background.draw(0, 0, WIDTH, HEIGHT);
     }
 }
