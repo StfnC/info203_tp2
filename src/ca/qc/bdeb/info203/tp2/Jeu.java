@@ -13,6 +13,7 @@ public class Jeu extends BasicGame {
     private static final int vitesseVaisseau = 7;
     private static final int vitesseLaser = 5;
     private static final int vitesseAsteroide = 3;
+    private static final String gameTitle = "SS Temp";
 
     private ArrayList<Entite> entiteListe;
     private Image background;
@@ -26,7 +27,7 @@ public class Jeu extends BasicGame {
     private dir directionVaisseau;
 
     public static void main(String[] args) throws SlickException {
-        AppGameContainer jeu = new AppGameContainer(new Jeu("Jeu"));
+        AppGameContainer jeu = new AppGameContainer(new Jeu(gameTitle));
 
         jeu.setDisplayMode(WIDTH, HEIGHT, false);
         jeu.setIcon("res/icon.png");
@@ -50,22 +51,26 @@ public class Jeu extends BasicGame {
         vaisseau = new Vaisseau(0, 0, 96, 96, "res/ship.png");
         vaisseau.setLocation((WIDTH/2 - vaisseau.getWidth()/2), (float) (HEIGHT*0.7));
 
-        entiteListe = new ArrayList<Entite>();
+        entiteListe = new ArrayList<>();
         entiteListe.add(vaisseau);
     }
 
     @Override
     public void update(GameContainer gameContainer, int delta) throws SlickException {
-
         for (int i = 0; i < entiteListe.size(); i++) {
             Entite currentEntity = entiteListe.get(i);
+            boolean destruction = currentEntity.isDetruire();
+
             if (currentEntity instanceof Vaisseau && vaisseauMoving) {
                 currentEntity.mouvementEntite(directionVaisseau, delta, vitesseVaisseau);
-            }
-            if (currentEntity instanceof Asteroide){
+            } else if (currentEntity instanceof Asteroide){
                 currentEntity.mouvementEntite(DOWN, delta, vitesseAsteroide);
-            }else if (currentEntity instanceof Laser){
+            } else if (currentEntity instanceof Laser){
+                if (destruction){
+                    entiteListe.remove(i);
+                } else {
                 currentEntity.mouvementEntite(UP, delta, vitesseLaser);
+                }
             }
         }
 
@@ -124,5 +129,13 @@ public class Jeu extends BasicGame {
         if (c == 'w' || c == 'a' || c == 's' || c == 'd'){
             vaisseauMoving = false;
         }
+    }
+
+    public static int getWIDTH() {
+        return WIDTH;
+    }
+
+    public static int getHEIGHT() {
+        return HEIGHT;
     }
 }
