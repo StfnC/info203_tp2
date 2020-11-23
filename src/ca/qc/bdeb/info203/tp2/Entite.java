@@ -6,14 +6,12 @@ import org.newdawn.slick.SpriteSheet;
 
 import java.awt.*;
 
-//TODO: Ajouter interface Movable ou méthodes Movables
+//TODO: Ajouter interface PeutCollisionner
 
-public abstract class Entite {
+public abstract class Entite implements Mouvement{
     protected float x, y, width, height;
     protected Image image;
     protected boolean detruire = false;
-
-    public abstract void mouvementEntite(dir dir, int delta, int vitesse);
 
     /**
      * Constructeur d'Entite avec image sur le disque

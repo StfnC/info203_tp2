@@ -11,15 +11,16 @@ public class Jeu extends BasicGame {
     private static final int WIDTH = 1024;
     private static final int HEIGHT = 800;
     private static final int vitesseVaisseau = 7;
-    private static final int vitesseLaser = 4;
-    private static final int vitesseAsteroide = 2;
-
+    private static final int vitesseLaser = 5;
+    private static final int vitesseAsteroide = 3;
 
     private ArrayList<Entite> entiteListe;
     private Image background;
 
     private Entite vaisseau;
     private Entite laser;
+
+    private GameContainer gc;
 
     private boolean vaisseauMoving = false;
     private dir directionVaisseau;
@@ -28,7 +29,9 @@ public class Jeu extends BasicGame {
         AppGameContainer jeu = new AppGameContainer(new Jeu("Jeu"));
 
         jeu.setDisplayMode(WIDTH, HEIGHT, false);
+        jeu.setIcon("res/icon.png");
         jeu.setAlwaysRender(true);
+        jeu.setShowFPS(false);
         jeu.setVSync(true);
 
         jeu.start();
@@ -40,6 +43,8 @@ public class Jeu extends BasicGame {
 
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
+        this.gc = gameContainer;
+
         background = new Image("res/background.png").getScaledCopy(WIDTH, HEIGHT);
 
         vaisseau = new Vaisseau(0, 0, 96, 96, "res/ship.png");
@@ -51,23 +56,25 @@ public class Jeu extends BasicGame {
 
     @Override
     public void update(GameContainer gameContainer, int delta) throws SlickException {
-        if (vaisseauMoving){
-            vaisseau.mouvementEntite(directionVaisseau, delta, vitesseVaisseau);
-        }
 
-        for (int i = 1; i < entiteListe.size(); i++) {
+        for (int i = 0; i < entiteListe.size(); i++) {
             Entite currentEntity = entiteListe.get(i);
+            if (currentEntity instanceof Vaisseau && vaisseauMoving) {
+                currentEntity.mouvementEntite(directionVaisseau, delta, vitesseVaisseau);
+            }
             if (currentEntity instanceof Asteroide){
-                //currentEntity.mouvementEntite();
+                currentEntity.mouvementEntite(DOWN, delta, vitesseAsteroide);
             }else if (currentEntity instanceof Laser){
                 currentEntity.mouvementEntite(UP, delta, vitesseLaser);
             }
         }
+
     }
 
     @Override
     public void render(GameContainer gameContainer, Graphics g) throws SlickException {
         background.draw(0, 0);
+
         for (int i = 0; i < entiteListe.size(); i++) {
             Entite currentEntity = entiteListe.get(i);
             float entityX = currentEntity.getX();
@@ -81,28 +88,28 @@ public class Jeu extends BasicGame {
     public void keyPressed(int key, char c) {
         switch (c){
             case 'w':
-                System.out.println(c);
                 directionVaisseau = UP;
                 vaisseauMoving = true;
                 break;
             case 'a':
-                System.out.println(c);
                 directionVaisseau = dir.LEFT;
                 vaisseauMoving = true;
                 break;
             case 's':
-                System.out.println(c);
                 directionVaisseau = dir.DOWN;
                 vaisseauMoving = true;
                 break;
             case 'd':
-                System.out.println(c);
                 directionVaisseau = dir.RIGHT;
                 vaisseauMoving = true;
                 break;
             case ' ':
                 float positionX = (vaisseau.getX() + vaisseau.getWidth()/2) - 16;
                 float positionY = vaisseau.getY() - 32;
+
+                //TODO: ajouter differents types de lasers aleatoires avec un SpriteSheet
+                //TODO: ajouter sound effects pour le laser
+
                 laser = new Laser(positionX, positionY, 32, 32, "res/laser.png");
                 entiteListe.add(laser);
                 break;
@@ -114,7 +121,8 @@ public class Jeu extends BasicGame {
 
     @Override
     public void keyReleased(int key, char c) {
-        vaisseauMoving = false;
+        if (c == 'w' || c == 'a' || c == 's' || c == 'd'){
+            vaisseauMoving = false;
+        }
     }
 }
-
