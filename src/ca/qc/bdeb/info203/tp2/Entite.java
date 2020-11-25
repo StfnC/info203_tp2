@@ -8,7 +8,7 @@ import java.awt.*;
 
 //TODO: Ajouter interface PeutCollisionner
 
-public abstract class Entite implements Mouvement {
+public abstract class Entite implements Mouvement, Collisionable {
     protected float x, y, width, height;
     protected Image image;
     protected boolean detruire = false;
