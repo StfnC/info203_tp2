@@ -4,7 +4,7 @@ import org.newdawn.slick.*;
 
 import java.util.ArrayList;
 
-import static ca.qc.bdeb.info203.tp2.dir.*;
+import static ca.qc.bdeb.info203.tp2.Direction.*;
 
 public class Jeu extends BasicGame {
 
@@ -24,7 +24,7 @@ public class Jeu extends BasicGame {
     private GameContainer gc;
 
     private boolean vaisseauMoving = false;
-    private dir directionVaisseau;
+    private Direction directionVaisseau;
 
     public static void main(String[] args) throws SlickException {
         AppGameContainer jeu = new AppGameContainer(new Jeu(gameTitle));
@@ -97,15 +97,15 @@ public class Jeu extends BasicGame {
                 vaisseauMoving = true;
                 break;
             case 'a':
-                directionVaisseau = dir.LEFT;
+                directionVaisseau = Direction.LEFT;
                 vaisseauMoving = true;
                 break;
             case 's':
-                directionVaisseau = dir.DOWN;
+                directionVaisseau = Direction.DOWN;
                 vaisseauMoving = true;
                 break;
             case 'd':
-                directionVaisseau = dir.RIGHT;
+                directionVaisseau = Direction.RIGHT;
                 vaisseauMoving = true;
                 break;
             case ' ':

@@ -5,8 +5,8 @@ import org.newdawn.slick.*;
 public class Vaisseau extends Entite {
 
     @Override
-    public void mouvementEntite(dir dir, int delta, int vitesse) {
-        switch (dir){
+    public void mouvementEntite(Direction direction, int delta, int vitesse) {
+        switch (direction){
             case UP:
                 y = y - 0.1f * vitesse * delta;
                 break;

@@ -8,17 +8,18 @@ import java.awt.*;
 
 //TODO: Ajouter interface PeutCollisionner
 
-public abstract class Entite implements Mouvement{
+public abstract class Entite implements Mouvement {
     protected float x, y, width, height;
     protected Image image;
     protected boolean detruire = false;
 
     /**
      * Constructeur d'Entite avec image sur le disque
-     * @param x position de l'entité dans l'écran - x
-     * @param y position de l'entité dans l'écran - y
-     * @param width largeur de l'image
-     * @param height hauteur de l'image
+     *
+     * @param x         position de l'entité dans l'écran - x
+     * @param y         position de l'entité dans l'écran - y
+     * @param width     largeur de l'image
+     * @param height    hauteur de l'image
      * @param imagePath chemin d'accès de l'image sur le disque
      */
     public Entite(float x, float y, float width, float height, String imagePath) {
@@ -36,11 +37,12 @@ public abstract class Entite implements Mouvement{
 
     /**
      * Constructeur d'Entite #2 - Avec SpriteSheet
-     * @param x position de l'entité dans l'écran - x
-     * @param y position de l'entité dans l'écran - y
+     *
+     * @param x           position de l'entité dans l'écran - x
+     * @param y           position de l'entité dans l'écran - y
      * @param spriteSheet SpriteSheet qui contient l'image
-     * @param ligne la ligne dans le SpriteSheet de l'image
-     * @param colonne la colonne dans le SpriteSheet de l'image
+     * @param ligne       la ligne dans le SpriteSheet de l'image
+     * @param colonne     la colonne dans le SpriteSheet de l'image
      */
     public Entite(float x, float y, SpriteSheet spriteSheet, int ligne, int colonne) {
         this.x = x;

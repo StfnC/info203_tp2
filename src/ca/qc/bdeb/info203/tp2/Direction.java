@@ -1,6 +1,6 @@
 package ca.qc.bdeb.info203.tp2;
 
-public enum dir{
+public enum Direction {
     UP,
     LEFT,
     DOWN,

@@ -5,7 +5,7 @@ public class Laser extends Entite{
     private float initialY;
 
     @Override
-    public void mouvementEntite(dir dir, int delta, int vitesse) {
+    public void mouvementEntite(Direction direction, int delta, int vitesse) {
         if (y >= (initialY - Jeu.getHEIGHT()/2)){
             y = y - 0.1f * vitesse * delta;
         } else {

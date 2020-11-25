@@ -2,9 +2,9 @@ package ca.qc.bdeb.info203.tp2;
 
 import org.newdawn.slick.SpriteSheet;
 
-public class Asteroide extends Entite{
+public class Asteroide extends Entite {
     @Override
-    public void mouvementEntite(dir dir, int delta, int vitesse) {
+    public void mouvementEntite(Direction direction, int delta, int vitesse) {
 
     }
 
