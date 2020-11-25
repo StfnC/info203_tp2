@@ -61,6 +61,8 @@ public class Jeu extends BasicGame {
             Entite currentEntity = entiteListe.get(i);
             boolean destruction = currentEntity.isDetruire();
 
+            // TODO: -Refactor cette partie de code pour prendre avantage des interfaces
+            //       -On devrait pouvoir seulement appeler currentEntity.mouvementEntite sans utiliser instanceof
             if (currentEntity instanceof Vaisseau && vaisseauMoving) {
                 currentEntity.mouvementEntite(directionVaisseau, delta, vitesseVaisseau);
             } else if (currentEntity instanceof Asteroide){
@@ -126,8 +128,17 @@ public class Jeu extends BasicGame {
 
     @Override
     public void keyReleased(int key, char c) {
-        if (c == 'w' || c == 'a' || c == 's' || c == 'd'){
-            vaisseauMoving = false;
+        // Utiliser un switch avec key permet de rendre la lecture plus facile et permet d'utiliser un switch pout toutes les touches
+        switch (key) {
+            case Input.KEY_ESCAPE:
+                this.gc.exit();
+                break;
+            case Input.KEY_W:
+            case Input.KEY_A:
+            case Input.KEY_S:
+            case Input.KEY_D:
+                vaisseauMoving = false;
+                break;
         }
     }
 
