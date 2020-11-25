@@ -67,11 +67,11 @@ public class Jeu extends BasicGame {
                     if (directionCollision.equals(UP)) {
                         vaisseau.setLocation(vaisseau.getX(), 0f);
                     } else if (directionCollision.equals(DOWN)) {
-                        vaisseau.setLocation(vaisseau.getX(), Jeu.HEIGHT);
+                        vaisseau.setLocation(vaisseau.getX(), Jeu.getHEIGHT() - vaisseau.getHeight());
                     } else if (directionCollision.equals(LEFT)) {
                         vaisseau.setLocation(0f, vaisseau.getY());
                     } else if (directionCollision.equals(RIGHT)) {
-                        vaisseau.setLocation(Jeu.getWIDTH(), vaisseau.getY());
+                        vaisseau.setLocation(Jeu.getWIDTH() - vaisseau.getWidth(), vaisseau.getY());
                     }
                 }
 
