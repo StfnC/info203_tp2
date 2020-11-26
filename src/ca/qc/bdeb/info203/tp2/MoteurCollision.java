@@ -4,8 +4,25 @@ import java.util.ArrayList;
 
 public class MoteurCollision {
     // TODO: À utiliser plus tard
-    private ArrayList<Collisionable> collisionables = new ArrayList<>();
 
+    public void gererCollisions(ArrayList<Collisionable> collisionables) {
+        for (Collisionable c1 : collisionables) {
+            for (Collisionable c2: collisionables) {
+                if (c1 != c2) {
+                    // TODO: Donner une interface Mur pour rendre la verification simple
+                    if (c1 instanceof Vaisseau) {
+                        if (!(c1.getRectangle().intersects(c2.getRectangle()))) {
+                            detecterCollisionMur(c1, c2);
+                        }
+                    } else if (c2 instanceof Vaisseau) {
+                        if (!(c1.getRectangle().intersects(c2.getRectangle()))) {
+                            detecterCollisionMur(c2, c1);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     public void detecterCollisionMur(Collisionable objetEnCollision, Collisionable murs) {
         // FIXME: Très hacky et hardcoded pour le moment, juste pour test, à modifier

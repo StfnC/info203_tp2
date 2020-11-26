@@ -17,7 +17,9 @@ public class Jeu extends BasicGame {
     private static final int vitesseAsteroide = 3;
     private static final String gameTitle = "SS Temp";
 
-    private ArrayList<Entite> entiteListe;
+    private ArrayList<Entite> entiteListe = new ArrayList<>();
+    private ArrayList<Collisionable> collisionables = new ArrayList<>();
+
     private Image background;
 
     private Vaisseau vaisseau;
@@ -53,8 +55,15 @@ public class Jeu extends BasicGame {
         this.gc = gameContainer;
         this.moteurCollision = new MoteurCollision();
 
+        background = new Image("res/background.png").getScaledCopy(WIDTH, HEIGHT);
+
+        vaisseau = new Vaisseau(0, 0, 96, 96, "res/ship.png");
+        vaisseau.setLocation((WIDTH / 2 - vaisseau.getWidth() / 2), (float) (HEIGHT * 0.7));
+
         bordures = new Collisionable() {
-            private final Rectangle RECT = new Rectangle(Jeu.getWIDTH(), Jeu.getHEIGHT());
+            // TODO: Rendre la ligne beaucoup plus lisible
+            // Crée un rectangle qui a l'espace d'un vaisseau entre lui et les bords de la fenêtre
+            private final Rectangle RECT = new Rectangle((int) vaisseau.getWidth(), (int) vaisseau.getHeight(), (int) (Jeu.getWIDTH() - 2*vaisseau.getWidth()), (int) (Jeu.getHEIGHT() - 2*vaisseau.getHeight()));
 
             @Override
             public void gererCollision(Collisionable objetEnCollision, Direction directionCollision) {
@@ -83,18 +92,15 @@ public class Jeu extends BasicGame {
             }
         };
 
-        background = new Image("res/background.png").getScaledCopy(WIDTH, HEIGHT);
-
-        vaisseau = new Vaisseau(0, 0, 96, 96, "res/ship.png");
-        vaisseau.setLocation((WIDTH / 2 - vaisseau.getWidth() / 2), (float) (HEIGHT * 0.7));
-
-        entiteListe = new ArrayList<>();
         entiteListe.add(vaisseau);
+
+        collisionables.add(bordures);
+        collisionables.add(vaisseau);
     }
 
     @Override
     public void update(GameContainer gameContainer, int delta) throws SlickException {
-        moteurCollision.detecterCollisionMur(vaisseau, bordures);
+        moteurCollision.gererCollisions(collisionables);
         for (int i = 0; i < entiteListe.size(); i++) {
             Entite currentEntity = entiteListe.get(i);
             boolean destruction = currentEntity.isDetruire();
@@ -189,5 +195,13 @@ public class Jeu extends BasicGame {
 
     public static int getHEIGHT() {
         return HEIGHT;
+    }
+
+    public ArrayList<Entite> getEntiteListe() {
+        return entiteListe;
+    }
+
+    public ArrayList<Collisionable> getCollisionables() {
+        return collisionables;
     }
 }
