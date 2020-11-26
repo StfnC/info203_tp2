@@ -3,21 +3,22 @@ package ca.qc.bdeb.info203.tp2;
 import org.newdawn.slick.*;
 
 public class Vaisseau extends Entite {
+    private static final int VITESSE_VAISSEAU = 7;
 
     @Override
-    public void mouvementEntite(Direction direction, int vitesse) {
+    public void mouvementEntite(Direction direction, int delta) {
         switch (direction) {
             case UP:
-                y = y - 0.1f * vitesse;
+                y -= Jeu.getScalingVitesse() * VITESSE_VAISSEAU * delta;
                 break;
             case LEFT:
-                x = x - 0.1f * vitesse;
+                x -= Jeu.getScalingVitesse() * VITESSE_VAISSEAU * delta;
                 break;
             case DOWN:
-                y = y + 0.1f * vitesse;
+                y += Jeu.getScalingVitesse() * VITESSE_VAISSEAU * delta;
                 break;
             case RIGHT:
-                x = x + 0.1f * vitesse;
+                x += Jeu.getScalingVitesse() * VITESSE_VAISSEAU * delta;
                 break;
         }
     }

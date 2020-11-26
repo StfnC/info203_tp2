@@ -11,9 +11,7 @@ import static ca.qc.bdeb.info203.tp2.Direction.*;
 public class Jeu extends BasicGame {
     private static final int WIDTH = 1024;
     private static final int HEIGHT = 800;
-    private static final int vitesseVaisseau = 7;
-    private static final int vitesseLaser = 5;
-    private static final int vitesseAsteroide = 3;
+    private static final float SCALING_VITESSE = 0.1f;
     private static final String gameTitle = "SS Temp";
 
     private ArrayList<Entite> entiteListe = new ArrayList<>();
@@ -76,18 +74,16 @@ public class Jeu extends BasicGame {
 
             // TODO: -Refactor cette partie de code pour prendre avantage des interfaces
             //       -On devrait pouvoir seulement appeler currentEntity.mouvementEntite sans utiliser instanceof
-            // TODO: -On devrait peut-être avoir la vitesse dans les différentes classes,
-            //       -Ex.: Ça a plus de sens que la vitesse d'un asteroide soit dans la classe Asteroide
             if (currentEntity instanceof Vaisseau && vaisseauMoving) {
-                currentEntity.mouvementEntite(directionVaisseau, vitesseVaisseau * delta);
+                currentEntity.mouvementEntite(directionVaisseau, delta);
             } else if (currentEntity instanceof Asteroide) {
-                currentEntity.mouvementEntite(DOWN, vitesseAsteroide * delta);
+                currentEntity.mouvementEntite(DOWN, delta);
             } else if (currentEntity instanceof Laser) {
                 if (destruction) {
                     // FIXME: Cette ligne va throw une erreur, car on peut pas modifier un ArrayList pendant qu'on y accède avec un loop
                     entiteListe.remove(i);
                 } else {
-                    currentEntity.mouvementEntite(UP, vitesseLaser * delta);
+                    currentEntity.mouvementEntite(UP, delta);
                 }
             }
         }
@@ -164,6 +160,10 @@ public class Jeu extends BasicGame {
 
     public static int getHEIGHT() {
         return HEIGHT;
+    }
+
+    public static float getScalingVitesse() {
+        return SCALING_VITESSE;
     }
 
     public ArrayList<Entite> getEntiteListe() {

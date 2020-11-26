@@ -3,8 +3,10 @@ package ca.qc.bdeb.info203.tp2;
 import org.newdawn.slick.SpriteSheet;
 
 public class Asteroide extends Entite {
+    private static final int VITESSE_ASTEROIDE = 3;
+
     @Override
-    public void mouvementEntite(Direction direction, int vitesse) {
+    public void mouvementEntite(Direction direction, int delta) {
 
     }
 
