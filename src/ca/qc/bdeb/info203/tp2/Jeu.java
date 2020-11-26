@@ -4,7 +4,6 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 import static ca.qc.bdeb.info203.tp2.Direction.*;
@@ -70,7 +69,7 @@ public class Jeu extends BasicGame {
 
     @Override
     public void update(GameContainer gameContainer, int delta) throws SlickException {
-        moteurCollision.gererCollisions(collisionables);
+        moteurCollision.detecterCollisions(collisionables);
         for (int i = 0; i < entiteListe.size(); i++) {
             Entite currentEntity = entiteListe.get(i);
             boolean destruction = currentEntity.isDetruire();
