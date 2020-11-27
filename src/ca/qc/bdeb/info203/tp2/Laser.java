@@ -27,8 +27,8 @@ public class Laser extends Entite {
         super(x, y, width, height, imagepath);
         initialY = y;
 
-        Sound effect1 = new Sound("res/sfx_laser1.wav");
-        Sound effect2 = new Sound("res/sfx_laser2.wav");
+        Sound effect1 = new Sound("res/Sounds/sfx_laser1.wav");
+        Sound effect2 = new Sound("res/Sounds/sfx_laser2.wav");
         sonLaser.add(effect1);
         sonLaser.add(effect2);
 
