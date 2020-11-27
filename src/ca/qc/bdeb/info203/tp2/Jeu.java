@@ -127,9 +127,12 @@ public class Jeu extends BasicGame {
                 float positionY = vaisseau.getY() - 32;
 
                 //TODO: ajouter differents types de lasers aleatoires avec un SpriteSheet
-                //TODO: ajouter sound effects pour le laser
 
-                laser = new Laser(positionX, positionY, 32, 32, "res/laser.png");
+                try {
+                    laser = new Laser(positionX, positionY, 32, 32, "res/laser.png");
+                } catch (SlickException ignored) {
+                }
+
                 entiteListe.add(laser);
                 break;
             case 'e':
