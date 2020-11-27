@@ -1,6 +1,5 @@
 package ca.qc.bdeb.info203.tp2;
 
-import com.sun.deploy.net.MessageHeader;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
