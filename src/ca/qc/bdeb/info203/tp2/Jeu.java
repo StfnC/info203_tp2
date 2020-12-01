@@ -128,10 +128,7 @@ public class Jeu extends BasicGame {
 
                 //TODO: ajouter differents types de lasers aleatoires avec un SpriteSheet
 
-                try {
-                    laser = new Laser(positionX, positionY, 32, 32, "res/laser.png");
-                } catch (SlickException ignored) {
-                }
+                laser = new Laser(positionX, positionY, 32, 32, "res/laser.png");
 
                 entiteListe.add(laser);
                 break;

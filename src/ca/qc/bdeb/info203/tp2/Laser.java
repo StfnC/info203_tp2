@@ -11,6 +11,8 @@ public class Laser extends Entite {
 
     private float initialY;
     private ArrayList<Sound> sonLaser = new ArrayList<>();
+    private Sound effect1;
+    private Sound effect2;
 
     @Override
     public void mouvementEntite(Direction direction, int delta) {
@@ -22,12 +24,18 @@ public class Laser extends Entite {
 
     }
 
-    public Laser(float x, float y, float width, float height, String imagepath) throws SlickException {
+    public Laser(float x, float y, float width, float height, String imagepath) {
         super(x, y, width, height, imagepath);
         initialY = y;
 
-        Sound effect1 = new Sound("res/Sounds/sfx_laser1.wav");
-        Sound effect2 = new Sound("res/Sounds/sfx_laser2.wav");
+
+        try {
+            effect1 = new Sound("res/Sounds/sfx_laser1.wav");
+            effect2 = new Sound("res/Sounds/sfx_laser2.wav");
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
+
         sonLaser.add(effect1);
         sonLaser.add(effect2);
 
