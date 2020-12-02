@@ -21,7 +21,6 @@ public class Laser extends Entite {
         } else {
             detruire = true;
         }
-
     }
 
     public Laser(float x, float y, float width, float height, String imagepath) {

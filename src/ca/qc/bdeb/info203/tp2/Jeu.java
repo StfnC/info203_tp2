@@ -18,9 +18,11 @@ public class Jeu extends BasicGame {
     private ArrayList<Collisionable> collisionables = new ArrayList<>();
 
     private Image background;
+    private SpriteSheet spriteAsteroides;
 
     private Vaisseau vaisseau;
     private Laser laser;
+    private Asteroide asteroide;
 
     private GameContainer gc;
 
@@ -54,6 +56,9 @@ public class Jeu extends BasicGame {
 
         background = new Image("res/background.png").getScaledCopy(WIDTH, HEIGHT);
 
+        spriteAsteroides = new SpriteSheet("res/SpriteAsteroide.png", 16, 16);
+        asteroide = new Asteroide(0, 0, spriteAsteroides, 0, 0);
+
         vaisseau = new Vaisseau(0, 0, 96, 96, "res/ship.png");
         vaisseau.setLocation((WIDTH / 2 - vaisseau.getWidth() / 2), (float) (HEIGHT * 0.7));
 
@@ -67,7 +72,11 @@ public class Jeu extends BasicGame {
 
     @Override
     public void update(GameContainer gameContainer, int delta) throws SlickException {
+        ArrayList<Entite> listeTemp = new ArrayList<>();
         moteurCollision.detecterCollisions(collisionables);
+
+        //TODO: Generation des asteroides
+
         for (int i = 0; i < entiteListe.size(); i++) {
             Entite currentEntity = entiteListe.get(i);
             boolean destruction = currentEntity.isDetruire();
@@ -80,14 +89,14 @@ public class Jeu extends BasicGame {
                 currentEntity.mouvementEntite(DOWN, delta);
             } else if (currentEntity instanceof Laser) {
                 if (destruction) {
-                    // FIXME: Cette ligne va throw une erreur, car on peut pas modifier un ArrayList pendant qu'on y accède avec un loop
-                    entiteListe.remove(i);
+                    listeTemp.add(currentEntity);
                 } else {
                     currentEntity.mouvementEntite(UP, delta);
                 }
             }
         }
-
+        entiteListe.removeAll(listeTemp);
+        listeTemp.clear();
     }
 
     @Override
@@ -98,8 +107,8 @@ public class Jeu extends BasicGame {
             Entite currentEntity = entiteListe.get(i);
             float entityX = currentEntity.getX();
             float entityY = currentEntity.getY();
-            Image currEntityImage = currentEntity.getImage();
-            currEntityImage.draw(entityX, entityY);
+
+            currentEntity.getImage().draw(entityX, entityY);
         }
     }
 
