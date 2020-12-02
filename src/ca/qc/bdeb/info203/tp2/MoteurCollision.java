@@ -1,5 +1,7 @@
 package ca.qc.bdeb.info203.tp2;
 
+import ca.qc.bdeb.info203.tp2.Entite.Vaisseau;
+
 import java.util.ArrayList;
 
 public class MoteurCollision {

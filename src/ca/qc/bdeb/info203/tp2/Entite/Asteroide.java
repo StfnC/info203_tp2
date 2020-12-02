@@ -1,5 +1,7 @@
-package ca.qc.bdeb.info203.tp2;
+package ca.qc.bdeb.info203.tp2.Entite;
 
+import ca.qc.bdeb.info203.tp2.Collisionable;
+import ca.qc.bdeb.info203.tp2.Direction;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
 

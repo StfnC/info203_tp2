@@ -1,5 +1,9 @@
 package ca.qc.bdeb.info203.tp2;
 
+import ca.qc.bdeb.info203.tp2.Entite.Asteroide;
+import ca.qc.bdeb.info203.tp2.Entite.Entite;
+import ca.qc.bdeb.info203.tp2.Entite.Laser;
+import ca.qc.bdeb.info203.tp2.Entite.Vaisseau;
 import org.newdawn.slick.*;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -77,8 +81,7 @@ public class Jeu extends BasicGame {
 
         //TODO: Generation des asteroides
 
-        for (int i = 0; i < entiteListe.size(); i++) {
-            Entite currentEntity = entiteListe.get(i);
+        for (Entite currentEntity : entiteListe) {
             boolean destruction = currentEntity.isDetruire();
 
             // TODO: -Refactor cette partie de code pour prendre avantage des interfaces
@@ -103,8 +106,7 @@ public class Jeu extends BasicGame {
     public void render(GameContainer gameContainer, Graphics g) throws SlickException {
         background.draw(0, 0);
 
-        for (int i = 0; i < entiteListe.size(); i++) {
-            Entite currentEntity = entiteListe.get(i);
+        for (Entite currentEntity : entiteListe) {
             float entityX = currentEntity.getX();
             float entityY = currentEntity.getY();
 

@@ -1,5 +1,8 @@
-package ca.qc.bdeb.info203.tp2;
+package ca.qc.bdeb.info203.tp2.Entite;
 
+import ca.qc.bdeb.info203.tp2.Collisionable;
+import ca.qc.bdeb.info203.tp2.Direction;
+import ca.qc.bdeb.info203.tp2.Jeu;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
