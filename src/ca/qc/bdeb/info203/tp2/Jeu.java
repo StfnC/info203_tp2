@@ -39,6 +39,8 @@ public class Jeu extends BasicGame {
         jeu.setIcon("res/icon.png");
         jeu.setAlwaysRender(true);
         jeu.setShowFPS(false);
+
+        jeu.setTargetFrameRate(60);
         jeu.setVSync(true);
 
         jeu.start();
@@ -58,7 +60,7 @@ public class Jeu extends BasicGame {
         spriteAsteroides = new SpriteSheet("res/SpriteAsteroide.png", 16, 16);
         asteroide = new Asteroide(0, 0, spriteAsteroides, 0, 0);
 
-        vaisseau = new Vaisseau(0, 0, 96, 96, "res/ship.png");
+        vaisseau = new Vaisseau(0, 0, 128, 128, "res/ship.png");
         vaisseau.setLocation((WIDTH / 2 - vaisseau.getWidth() / 2), (float) (HEIGHT * 0.7));
 
         bordures = new Bordure((int) vaisseau.getWidth(), (int) vaisseau.getHeight());
