@@ -1,12 +1,7 @@
 package ca.qc.bdeb.info203.tp2;
 
-import ca.qc.bdeb.info203.tp2.Entite.Asteroide;
-import ca.qc.bdeb.info203.tp2.Entite.Entite;
-import ca.qc.bdeb.info203.tp2.Entite.Laser;
-import ca.qc.bdeb.info203.tp2.Entite.Vaisseau;
+import ca.qc.bdeb.info203.tp2.Entite.*;
 import org.newdawn.slick.*;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 
 import java.util.ArrayList;
 
