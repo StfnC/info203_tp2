@@ -7,11 +7,13 @@ import java.util.ArrayList;
 
 import static ca.qc.bdeb.info203.tp2.Direction.*;
 
-public class Jeu extends BasicGame {
+public class Jeu extends BasicGame implements Observateur {
     private static final int WIDTH = 1024;
     private static final int HEIGHT = 800;
     private static final float SCALING_VITESSE = 0.1f;
-    private static final String gameTitle = "SS Temp";
+    private static final String GAME_TITLE = "SS Temp";
+    // Délai en millisecondes
+    private static final int DELAI_INVULNERABILITE = 3000;
 
     private ArrayList<Entite> entiteListe = new ArrayList<>();
     private ArrayList<Collisionable> collisionables = new ArrayList<>();
@@ -31,9 +33,10 @@ public class Jeu extends BasicGame {
     private MoteurCollision moteurCollision;
 
     private Collisionable bordures;
+    private long momentCollision;
 
     public static void main(String[] args) throws SlickException {
-        AppGameContainer jeu = new AppGameContainer(new Jeu(gameTitle));
+        AppGameContainer jeu = new AppGameContainer(new Jeu(GAME_TITLE));
 
         jeu.setDisplayMode(WIDTH, HEIGHT, false);
         jeu.setIcon("res/icon.png");
@@ -62,6 +65,7 @@ public class Jeu extends BasicGame {
 
         vaisseau = new Vaisseau(0, 0, 128, 128, "res/ship.png");
         vaisseau.setLocation((WIDTH / 2 - vaisseau.getWidth() / 2), (float) (HEIGHT * 0.7));
+        vaisseau.addObservateur(this);
 
         bordures = new Bordure((int) vaisseau.getWidth(), (int) vaisseau.getHeight());
 
@@ -78,7 +82,6 @@ public class Jeu extends BasicGame {
         ArrayList<Entite> listeTemp = new ArrayList<>();
 
         //TODO: Generation des asteroides
-
         for (Entite currentEntity : entiteListe) {
             boolean destruction = currentEntity.isDetruire();
 
@@ -191,5 +194,13 @@ public class Jeu extends BasicGame {
 
     public ArrayList<Collisionable> getCollisionables() {
         return collisionables;
+    }
+
+    @Override
+    public void update(long millis) {
+        if (millis - this.momentCollision > DELAI_INVULNERABILITE) {
+            vaisseau.setVulnerable(true);
+            this.momentCollision = millis;
+        }
     }
 }
