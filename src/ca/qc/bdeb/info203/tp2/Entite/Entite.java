@@ -49,10 +49,9 @@ public abstract class Entite implements Mouvement, Collisionable {
     public Entite(float x, float y, SpriteSheet spriteSheet, int ligne, int colonne) {
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
-        // FIXME: Devrait être colonne ligne?
         this.image = spriteSheet.getSubImage(ligne, colonne);
+        this.width = image.getWidth();
+        this.height = image.getHeight();
     }
 
     // Permet de déplacer l'entité

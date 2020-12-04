@@ -17,6 +17,11 @@ public class Bordure implements Collisionable, Mur {
     }
 
     @Override
+    public void gererCollision(Collisionable objetEnCollision) {
+
+    }
+
+    @Override
     public void gererCollision(Collisionable objetEnCollision, Direction directionCollision) {
         // TODO: -Maybe changer gererCollision pour qu'on obtienne la direction de la collision directement
         //       -Pour trouver ça on pourrait avoir une classe MoteurCollision qui va s'occuoer de passer à travers une liste de collisionnable et dire si y a une collision

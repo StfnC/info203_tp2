@@ -38,6 +38,11 @@ public class Vaisseau extends Entite {
     }
 
     @Override
+    public void gererCollision(Collisionable objetEnCollision) {
+
+    }
+
+    @Override
     public void gererCollision(Collisionable objetEnCollision, Direction directionCollision) {
 
     }

@@ -26,21 +26,13 @@ public class MoteurCollision {
                     } else {
                         // On délègue aux objets collisionables la façon dont ils veulent gérer la collision
                         if (c1.getRectangle().intersects(c2.getRectangle())) {
-                            c1.gererCollision(c2, determinerDirectionCollision(c1, c2));
-                            c2.gererCollision(c1, determinerDirectionCollision(c1, c2));
+                            c1.gererCollision(c2);
+                            c2.gererCollision(c1);
                         }
                     }
                 }
             }
         }
-    }
-
-    public Direction determinerDirectionCollision(Collisionable c1, Collisionable c2) {
-        // TODO: -Voir si on a vraiment besoin de trouver la direction de la collision
-        //       -Si oui, utiliser cette méthode
-        //       -Si non, l'enlever et se débarasser du paramètre direction dans gererCollision de l'interface Collisionable
-        Direction direction = Direction.UP;
-        return direction;
     }
 
     public void detecterCollisionMur(Collisionable objetEnCollision, Collisionable murs) {

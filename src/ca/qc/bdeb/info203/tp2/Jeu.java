@@ -74,7 +74,6 @@ public class Jeu extends BasicGame {
     @Override
     public void update(GameContainer gameContainer, int delta) throws SlickException {
         ArrayList<Entite> listeTemp = new ArrayList<>();
-        moteurCollision.detecterCollisions(collisionables);
 
         //TODO: Generation des asteroides
 
@@ -95,6 +94,9 @@ public class Jeu extends BasicGame {
                 }
             }
         }
+
+        moteurCollision.detecterCollisions(collisionables);
+
         entiteListe.removeAll(listeTemp);
         listeTemp.clear();
     }
