@@ -85,26 +85,25 @@ public class Jeu extends BasicGame implements Observateur {
         for (Entite currentEntity : entiteListe) {
             boolean destruction = currentEntity.isDetruire();
 
-            // TODO: -Refactor cette partie de code pour prendre avantage des interfaces
-            //       -On devrait pouvoir seulement appeler currentEntity.mouvementEntite sans utiliser instanceof
-            if (currentEntity instanceof Vaisseau && vaisseauMoving) {
-                currentEntity.mouvementEntite(directionVaisseau, delta);
-            } else if (currentEntity instanceof Asteroide) {
-                currentEntity.mouvementEntite(DOWN, delta);
-            } else if (currentEntity instanceof Laser) {
-                if (destruction) {
-                    listeTemp.add(currentEntity);
-                } else {
+            if (destruction) {
+                listeTemp.add(currentEntity);
+            } else {
+                // TODO: -Refactor cette partie de code pour prendre avantage des interfaces
+                //       -On devrait pouvoir seulement appeler currentEntity.mouvementEntite sans utiliser instanceof
+                if (currentEntity instanceof Vaisseau && vaisseauMoving) {
+                    currentEntity.mouvementEntite(directionVaisseau, delta);
+                } else if (currentEntity instanceof Asteroide) {
+                    currentEntity.mouvementEntite(DOWN, delta);
+                } else if (currentEntity instanceof Laser) {
                     currentEntity.mouvementEntite(UP, delta);
                 }
             }
         }
-
-        moteurCollision.detecterCollisions(collisionables);
-
         entiteListe.removeAll(listeTemp);
         collisionables.removeAll(listeTemp);
         listeTemp.clear();
+
+        moteurCollision.detecterCollisions(collisionables);
 
         if (vaisseau.getLives() <= 0) {
             this.gc.exit();
@@ -120,7 +119,8 @@ public class Jeu extends BasicGame implements Observateur {
             float entityY = currentEntity.getY();
 
             currentEntity.getImage().draw(entityX, entityY);
-            g.drawLine(currentEntity.getX(), currentEntity.getY(), (currentEntity.getX() + currentEntity.getWidth()), (currentEntity.getY() + currentEntity.getHeight()));
+            // TODO: Utile pour debug les collisions, mais à enlever plus tard
+//            g.drawLine(currentEntity.getX(), currentEntity.getY(), (currentEntity.getX() + currentEntity.getWidth()), (currentEntity.getY() + currentEntity.getHeight()));
         }
     }
 

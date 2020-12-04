@@ -36,7 +36,19 @@ public class Asteroide extends Entite {
 
     @Override
     public void gererCollision(Collisionable objetEnCollision) {
+        if (objetEnCollision instanceof Vaisseau) {
+            Vaisseau vaisseau = (Vaisseau) objetEnCollision;
+            if (vaisseau.getHeight() > this.getHeight()) {
+                this.detruire = true;
+            }
+        } else if (objetEnCollision instanceof Laser) {
+            this.separerAsteroid();
+        }
+    }
 
+    private void separerAsteroid() {
+        this.detruire = true;
+        System.out.println("Asteroide doit split");
     }
 
     @Override

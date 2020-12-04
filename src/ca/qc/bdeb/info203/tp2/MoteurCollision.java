@@ -26,7 +26,6 @@ public class MoteurCollision {
                     } else if (!(c1 instanceof Mur) && !(c2 instanceof Mur)) {
                         // On délègue aux objets collisionables la façon dont ils veulent gérer la collision
                         if (c1.getRectangle().intersects(c2.getRectangle())) {
-                            System.out.println(c1 + " hit " + c2);
                             c1.gererCollision(c2);
                             c2.gererCollision(c1);
                         }
