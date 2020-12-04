@@ -9,6 +9,12 @@ public class Vaisseau extends Entite {
     private static final int VITESSE_VAISSEAU = 7;
 
     private int lives;
+    private boolean vulnerable = true;
+
+    public Vaisseau(float x, float y, float width, float height, String imagepath) throws SlickException {
+        super(x, y, width, height, imagepath);
+        lives = 3;
+    }
 
     @Override
     public void mouvementEntite(Direction direction, int delta) {
@@ -28,22 +34,27 @@ public class Vaisseau extends Entite {
         }
     }
 
-    public Vaisseau(float x, float y, float width, float height, String imagepath) throws SlickException {
-        super(x, y, width, height, imagepath);
-        lives = 3;
-    }
-
     public void enleverVie(){
         lives--;
     }
 
     @Override
     public void gererCollision(Collisionable objetEnCollision) {
+        if (objetEnCollision instanceof Asteroide) {
+            Asteroide asteroide = (Asteroide) objetEnCollision;
+            if ((asteroide.getHeight() >= this.getHeight()) && vulnerable) {
+                this.enleverVie();
+            }
+        }
 
     }
 
     @Override
     public void gererCollision(Collisionable objetEnCollision, Direction directionCollision) {
 
+    }
+
+    public int getLives() {
+        return this.lives;
     }
 }

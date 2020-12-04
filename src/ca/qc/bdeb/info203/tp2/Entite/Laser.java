@@ -3,6 +3,7 @@ package ca.qc.bdeb.info203.tp2.Entite;
 import ca.qc.bdeb.info203.tp2.Collisionable;
 import ca.qc.bdeb.info203.tp2.Direction;
 import ca.qc.bdeb.info203.tp2.Jeu;
+import ca.qc.bdeb.info203.tp2.Mur;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
@@ -16,15 +17,6 @@ public class Laser extends Entite {
     private ArrayList<Sound> sonLaser = new ArrayList<>();
     private Sound effect1;
     private Sound effect2;
-
-    @Override
-    public void mouvementEntite(Direction direction, int delta) {
-        if (y >= (initialY - Jeu.getHEIGHT() / 2)) {
-            y -= Jeu.getScalingVitesse() * VITESSE_LASER * delta;
-        } else {
-            detruire = true;
-        }
-    }
 
     public Laser(float x, float y, float width, float height, String imagepath) {
         super(x, y, width, height, imagepath);
@@ -44,6 +36,15 @@ public class Laser extends Entite {
         playSFX();
     }
 
+    @Override
+    public void mouvementEntite(Direction direction, int delta) {
+        if (y >= (initialY - Jeu.getHEIGHT() / 2)) {
+            y -= Jeu.getScalingVitesse() * VITESSE_LASER * delta;
+        } else {
+            detruire = true;
+        }
+    }
+
     private void playSFX() {
         Random random = new Random();
         sonLaser.get(random.nextInt(sonLaser.size())).play();
@@ -51,7 +52,9 @@ public class Laser extends Entite {
 
     @Override
     public void gererCollision(Collisionable objetEnCollision) {
-
+        if (objetEnCollision instanceof Asteroide) {
+            detruire = true;
+        }
     }
 
     @Override

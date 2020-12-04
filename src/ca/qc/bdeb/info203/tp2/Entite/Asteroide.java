@@ -14,11 +14,6 @@ public class Asteroide extends Entite {
     private Image ast3;
     private Image ast4;
 
-    @Override
-    public void mouvementEntite(Direction direction, int delta) {
-
-    }
-
     public Asteroide(float x, float y, SpriteSheet spriteAsteroides, int ligne, int colonne) {
         super(x, y, spriteAsteroides, ligne, colonne);
 
@@ -29,6 +24,14 @@ public class Asteroide extends Entite {
         ast4 = spriteAsteroides.getSubImage(352, 128, 16, 16);
 
         image = ast0;
+        // FIXME: On devrait pas avoir à faire ça ici aussi, il se fait déjà dans le constructor d'entité
+        this.width = image.getWidth();
+        this.height = image.getHeight();
+    }
+
+    @Override
+    public void mouvementEntite(Direction direction, int delta) {
+
     }
 
     @Override

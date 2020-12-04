@@ -58,7 +58,7 @@ public class Jeu extends BasicGame {
         background = new Image("res/background.png").getScaledCopy(WIDTH, HEIGHT);
 
         spriteAsteroides = new SpriteSheet("res/SpriteAsteroide.png", 16, 16);
-        asteroide = new Asteroide(0, 0, spriteAsteroides, 0, 0);
+        asteroide = new Asteroide(100, 100, spriteAsteroides, 0, 0);
 
         vaisseau = new Vaisseau(0, 0, 128, 128, "res/ship.png");
         vaisseau.setLocation((WIDTH / 2 - vaisseau.getWidth() / 2), (float) (HEIGHT * 0.7));
@@ -66,7 +66,9 @@ public class Jeu extends BasicGame {
         bordures = new Bordure((int) vaisseau.getWidth(), (int) vaisseau.getHeight());
 
         entiteListe.add(vaisseau);
+        entiteListe.add(asteroide);
 
+        collisionables.add(asteroide);
         collisionables.add(bordures);
         collisionables.add(vaisseau);
     }
@@ -98,7 +100,12 @@ public class Jeu extends BasicGame {
         moteurCollision.detecterCollisions(collisionables);
 
         entiteListe.removeAll(listeTemp);
+        collisionables.removeAll(listeTemp);
         listeTemp.clear();
+
+        if (vaisseau.getLives() <= 0) {
+            this.gc.exit();
+        }
     }
 
     @Override
@@ -110,6 +117,7 @@ public class Jeu extends BasicGame {
             float entityY = currentEntity.getY();
 
             currentEntity.getImage().draw(entityX, entityY);
+            g.drawLine(currentEntity.getX(), currentEntity.getY(), (currentEntity.getX() + currentEntity.getWidth()), (currentEntity.getY() + currentEntity.getHeight()));
         }
     }
 
@@ -141,6 +149,7 @@ public class Jeu extends BasicGame {
                 laser = new Laser(positionX, positionY, 32, 32, "res/laser.png");
 
                 entiteListe.add(laser);
+                collisionables.add(laser);
                 break;
             case 'e':
                 System.out.println("vider");
