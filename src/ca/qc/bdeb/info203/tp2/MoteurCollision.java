@@ -27,7 +27,6 @@ public class MoteurCollision {
                         // On délègue aux objets collisionables la façon dont ils veulent gérer la collision
                         if (c1.getRectangle().intersects(c2.getRectangle())) {
                             c1.gererCollision(c2);
-                            c2.gererCollision(c1);
                         }
                     }
                 }
