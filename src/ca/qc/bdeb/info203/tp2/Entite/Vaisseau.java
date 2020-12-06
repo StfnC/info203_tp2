@@ -9,13 +9,15 @@ import java.util.ArrayList;
 public class Vaisseau extends Entite implements Observable {
     private static final int VITESSE_VAISSEAU = 7;
 
+    private Sound shieldDown;
     private int lives;
     private boolean vulnerable = true;
     private ArrayList<Observateur> observateurs = new ArrayList<>();
 
-    public Vaisseau(float x, float y, float width, float height, String imagepath) throws SlickException {
-        super(x, y, width, height, imagepath);
+    public Vaisseau(float x, float y, float width, float height, String imagePath) throws SlickException {
+        super(x, y, width, height, imagePath);
         lives = 3;
+        shieldDown = new Sound("res/Sounds/sfx_shieldDown.wav");
     }
 
     @Override
@@ -36,7 +38,10 @@ public class Vaisseau extends Entite implements Observable {
         }
     }
 
-    public void enleverVie(){
+    public void enleverVie() {
+        if (lives > 1) {
+            shieldDown.play();
+        }
         lives--;
     }
 
@@ -50,7 +55,6 @@ public class Vaisseau extends Entite implements Observable {
                 this.vulnerable = false;
             }
         }
-        System.out.println(lives);
     }
 
     @Override

@@ -5,10 +5,9 @@ import ca.qc.bdeb.info203.tp2.Entite.Vaisseau;
 import java.awt.*;
 
 import static ca.qc.bdeb.info203.tp2.Direction.*;
-import static ca.qc.bdeb.info203.tp2.Direction.RIGHT;
 
 public class Bordure implements Collisionable, Mur {
-    private Rectangle rectangle;
+    private final Rectangle rectangle;
 
     public Bordure(int largeurVaisseau, int hauteurVaisseau) {
         // TODO: Rendre la ligne beaucoup plus lisible, si besoin

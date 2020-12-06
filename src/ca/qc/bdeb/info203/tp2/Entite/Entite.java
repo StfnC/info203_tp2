@@ -4,16 +4,17 @@ import ca.qc.bdeb.info203.tp2.Collisionable;
 import ca.qc.bdeb.info203.tp2.Mouvement;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.SpriteSheet;
 
 import java.awt.*;
 
 //TODO: Ajouter interface PeutCollisionner
 
 public abstract class Entite implements Mouvement, Collisionable {
+    public int index;
     protected float x, y, width, height;
     protected Image image;
     protected boolean detruire = false;
+
 
     /**
      * Constructeur d'Entite avec image sur le disque
@@ -37,21 +38,10 @@ public abstract class Entite implements Mouvement, Collisionable {
         }
     }
 
-    /**
-     * Constructeur d'Entite #2 - Avec SpriteSheet
-     *
-     * @param x           position de l'entité dans l'écran - x
-     * @param y           position de l'entité dans l'écran - y
-     * @param spriteSheet SpriteSheet qui contient l'image
-     * @param ligne       la ligne dans le SpriteSheet de l'image
-     * @param colonne     la colonne dans le SpriteSheet de l'image
-     */
-    public Entite(float x, float y, SpriteSheet spriteSheet, int ligne, int colonne) {
+    public Entite(float x, float y, int index) {
         this.x = x;
         this.y = y;
-        this.image = spriteSheet.getSubImage(ligne, colonne);
-        this.width = image.getWidth();
-        this.height = image.getHeight();
+        this.index = index;
     }
 
     // Permet de déplacer l'entité

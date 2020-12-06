@@ -4,6 +4,7 @@ import java.awt.*;
 
 public interface Collisionable {
     void gererCollision(Collisionable objetEnCollision);
+
     void gererCollision(Collisionable objetEnCollision, Direction directionCollision);
 
     Rectangle getRectangle();

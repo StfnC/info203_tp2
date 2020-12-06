@@ -3,7 +3,6 @@ package ca.qc.bdeb.info203.tp2.Entite;
 import ca.qc.bdeb.info203.tp2.Collisionable;
 import ca.qc.bdeb.info203.tp2.Direction;
 import ca.qc.bdeb.info203.tp2.Jeu;
-import ca.qc.bdeb.info203.tp2.Mur;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
@@ -13,8 +12,8 @@ import java.util.Random;
 public class Laser extends Entite {
     private static final int VITESSE_LASER = 5;
 
-    private float initialY;
-    private ArrayList<Sound> sonLaser = new ArrayList<>();
+    private final float initialY;
+    private final ArrayList<Sound> sonLaser = new ArrayList<>();
     private Sound effect1;
     private Sound effect2;
 
