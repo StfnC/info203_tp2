@@ -14,15 +14,17 @@ import static ca.qc.bdeb.info203.tp2.Direction.UP;
 public class Jeu extends BasicGame implements Observateur {
     private static final int WIDTH = 1024;
     private static final int HEIGHT = 800;
+    private static final int DELAI_INVULNERABILITE = 3000;
+
     private static final float SCALING_VITESSE = 0.1f;
     private static final String GAME_TITLE = "SS Temp";
-    // Délai en millisecondes
-    private static final int DELAI_INVULNERABILITE = 3000;
 
     private static final ArrayList<Entite> entiteListe = new ArrayList<>();
     private static final ArrayList<Collisionable> collisionables = new ArrayList<>();
 
-    private Image background;
+    private int scalingValue = 0;
+
+    private Image backgroundTile;
     private Image heart;
 
     private Vaisseau vaisseau;
@@ -48,7 +50,7 @@ public class Jeu extends BasicGame implements Observateur {
         jeu.setDisplayMode(WIDTH, HEIGHT, false);
         jeu.setIcon("res/icon.png");
         jeu.setAlwaysRender(true);
-        jeu.setShowFPS(false);
+        jeu.setShowFPS(true);
 
         jeu.setTargetFrameRate(60);
 
@@ -75,7 +77,7 @@ public class Jeu extends BasicGame implements Observateur {
         //TODO: Background music
         gameOver = new Sound("res/Sounds/sfx_lose.wav");
 
-        background = new Image("res/background.png").getScaledCopy(WIDTH, HEIGHT);
+        backgroundTile = new Image("res/bgTile.png");
         heart = new Image("res/health.png");
 
         Asteroide asteroide = new Asteroide(100, 100, 0);
@@ -138,7 +140,6 @@ public class Jeu extends BasicGame implements Observateur {
             } else if (currentEntity instanceof Laser) {
                 currentEntity.mouvementEntite(UP, delta);
             }
-
         }
 
         entiteListe.removeAll(listeEntiteDetruites);
@@ -150,26 +151,27 @@ public class Jeu extends BasicGame implements Observateur {
         listeEntiteCrees.clear();
 
         moteurCollision.detecterCollisions(collisionables);
+
+        scalingValue += SCALING_VITESSE * 2 * delta;
     }
 
     @Override
     public void render(GameContainer gameContainer, Graphics g) {
 
-        //TODO: Scrolling barckground (le prof veut ça)
-        background.draw(0, 0);
+        doBackground(gameContainer, g);
 
         for (Entite currentEntity : entiteListe) {
             float entityX = currentEntity.getX();
             float entityY = currentEntity.getY();
 
-            if (currentEntity instanceof Vaisseau && !((Vaisseau) currentEntity).getVulnerable()){
+            if (currentEntity instanceof Vaisseau && !((Vaisseau) currentEntity).getVulnerable()) {
                 ((Vaisseau) currentEntity).updateObservateurs();
                 currentEntity.getImage().drawFlash(entityX, entityY);
             } else {
                 currentEntity.getImage().draw(entityX, entityY);
             }
 
-            //TODO: Utile pour debug les collisions, mais à enlever plus tard
+            //Utile pour debug les collisions, mais à enlever plus tard
             //g.drawLine(currentEntity.getX(), currentEntity.getY(), (currentEntity.getX() + currentEntity.getWidth()), (currentEntity.getY() + currentEntity.getHeight()));
         }
 
@@ -206,6 +208,14 @@ public class Jeu extends BasicGame implements Observateur {
             Thread.sleep(1000);
             gc.exit();
         } catch (InterruptedException ignored) {
+        }
+    }
+
+    private void doBackground(GameContainer gc, Graphics g) {
+        for (int i = 0; i < WIDTH; i = i + 256) {
+            for (int j = scalingValue % 256 - 256; j < HEIGHT; j = j + 256) {
+                g.drawImage(backgroundTile, i, j);
+            }
         }
     }
 
