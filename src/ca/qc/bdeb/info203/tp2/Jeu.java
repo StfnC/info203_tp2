@@ -71,6 +71,8 @@ public class Jeu extends BasicGame implements Observateur {
     public void init(GameContainer gameContainer) throws SlickException {
         this.gc = gameContainer;
         this.moteurCollision = new MoteurCollision();
+
+        //TODO: Background music
         gameOver = new Sound("res/Sounds/sfx_lose.wav");
 
         background = new Image("res/background.png").getScaledCopy(WIDTH, HEIGHT);
@@ -98,6 +100,8 @@ public class Jeu extends BasicGame implements Observateur {
         ArrayList<Entite> listeEntiteCrees = new ArrayList<>();
 
         //TODO: Generation des asteroides
+
+        //TODO: Garbage collector a certains intervalles
 
         for (Entite currentEntity : entiteListe) {
             boolean destruction = currentEntity.isDetruire();
@@ -150,6 +154,8 @@ public class Jeu extends BasicGame implements Observateur {
 
     @Override
     public void render(GameContainer gameContainer, Graphics g) {
+
+        //TODO: Scrolling barckground (le prof veut ça)
         background.draw(0, 0);
 
         for (Entite currentEntity : entiteListe) {
@@ -181,6 +187,8 @@ public class Jeu extends BasicGame implements Observateur {
                 heart.draw(10, 10);
                 break;
             case 0:
+                //TODO: Ajouter fonction qui demande de rejouer (le prof veut ça)
+
                 doGameOver();
         }
 
