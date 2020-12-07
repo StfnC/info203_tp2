@@ -49,7 +49,7 @@ public class Jeu extends BasicGame implements Observateur {
         jeu.setDisplayMode(WIDTH, HEIGHT, false);
         jeu.setIcon("res/icon.png");
         jeu.setAlwaysRender(true);
-        jeu.setShowFPS(true);
+        jeu.setShowFPS(false);
 
         jeu.setTargetFrameRate(60);
 
@@ -212,7 +212,7 @@ public class Jeu extends BasicGame implements Observateur {
 
     private void doBackground(GameContainer gc, Graphics g) {
         for (int i = 0; i < WIDTH; i = i + 256) {
-            for (int j = (int) (scalingValue % 256 - 256); j < HEIGHT; j = j + 256) {
+            for (long j = scalingValue % 256 - 256; j < HEIGHT; j = j + 256) {
                 g.drawImage(backgroundTile, i, j);
             }
         }
