@@ -22,8 +22,6 @@ public class Jeu extends BasicGame implements Observateur {
     private static final ArrayList<Entite> entiteListe = new ArrayList<>();
     private static final ArrayList<Collisionable> collisionables = new ArrayList<>();
 
-    private int scalingValue = 0;
-
     private Image backgroundTile;
     private Image heart;
 
@@ -39,6 +37,7 @@ public class Jeu extends BasicGame implements Observateur {
     private MoteurCollision moteurCollision;
 
     private long momentCollision;
+    private long scalingValue = 0;
 
     public Jeu(String title) {
         super(title);
@@ -213,7 +212,7 @@ public class Jeu extends BasicGame implements Observateur {
 
     private void doBackground(GameContainer gc, Graphics g) {
         for (int i = 0; i < WIDTH; i = i + 256) {
-            for (int j = scalingValue % 256 - 256; j < HEIGHT; j = j + 256) {
+            for (int j = (int) (scalingValue % 256 - 256); j < HEIGHT; j = j + 256) {
                 g.drawImage(backgroundTile, i, j);
             }
         }
