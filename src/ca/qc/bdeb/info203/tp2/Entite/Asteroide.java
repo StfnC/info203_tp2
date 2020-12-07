@@ -1,10 +1,12 @@
 package ca.qc.bdeb.info203.tp2.Entite;
 
+import ca.qc.bdeb.info203.tp2.Cargo;
 import ca.qc.bdeb.info203.tp2.Collisionable;
 import ca.qc.bdeb.info203.tp2.Direction;
 import ca.qc.bdeb.info203.tp2.Jeu;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
 
 public class Asteroide extends Entite {
@@ -19,6 +21,8 @@ public class Asteroide extends Entite {
 
     private boolean isSeparer;
 
+    private Sound sonAsteroideBroye;
+
     public Asteroide(float x, float y, int index) throws SlickException {
         super(x, y, index);
 
@@ -29,6 +33,8 @@ public class Asteroide extends Entite {
         ast4 = spriteAsteroides.getSubImage(352, 128, 16, 16);
 
         setImageAsteroide();
+
+        sonAsteroideBroye = new Sound("res/Sounds/sfx_shieldUp.wav");
     }
 
     private void setImageAsteroide() {
@@ -67,6 +73,8 @@ public class Asteroide extends Entite {
             Vaisseau vaisseau = (Vaisseau) objetEnCollision;
             if (vaisseau.getHeight() > this.getHeight()) {
                 this.detruire = true;
+                Cargo.addCargaisonVaisseau(this);
+                sonAsteroideBroye.play();
             }
         } else if (objetEnCollision instanceof Laser) {
             this.detruire = true;

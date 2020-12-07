@@ -111,13 +111,13 @@ public class Jeu extends BasicGame implements Observateur {
                 currentEntity.mouvementEntite(directionVaisseau, delta);
             } else if (currentEntity instanceof Asteroide) {
                 if (((Asteroide) currentEntity).isSeparer()) {
-                    float positionXAst1 = currentEntity.getX() - currentEntity.getWidth() / 8;
-                    float positionYAst1 = currentEntity.getY() / 2;
-
-                    float positionXAst2 = currentEntity.getX() + (5 * currentEntity.getWidth()) / 8;
-                    float positionYAst2 = currentEntity.getY() / 2;
-
                     if (currentEntity.index != 4) {
+                        float positionXAst1 = currentEntity.getX() - currentEntity.getWidth() / 8;
+                        float positionYAst1 = currentEntity.getY() + currentEntity.getHeight() / 2;
+
+                        float positionXAst2 = currentEntity.getX() + (5 * currentEntity.getWidth()) / 8;
+                        float positionYAst2 = currentEntity.getY() + currentEntity.getHeight() / 2;
+
                         Asteroide ast1 = new Asteroide(positionXAst1, positionYAst1, currentEntity.index + 1);
                         Asteroide ast2 = new Asteroide(positionXAst2, positionYAst2, currentEntity.index + 1);
 
@@ -143,7 +143,6 @@ public class Jeu extends BasicGame implements Observateur {
 
         entiteListe.addAll(listeEntiteCrees);
         collisionables.addAll(listeEntiteCrees);
-
         listeEntiteCrees.clear();
 
         moteurCollision.detecterCollisions(collisionables);
@@ -157,7 +156,13 @@ public class Jeu extends BasicGame implements Observateur {
             float entityX = currentEntity.getX();
             float entityY = currentEntity.getY();
 
-            currentEntity.getImage().draw(entityX, entityY);
+            if (currentEntity instanceof Vaisseau && !((Vaisseau) currentEntity).getVulnerable()){
+                ((Vaisseau) currentEntity).updateObservateurs();
+                currentEntity.getImage().drawFlash(entityX, entityY);
+            } else {
+                currentEntity.getImage().draw(entityX, entityY);
+            }
+
             //TODO: Utile pour debug les collisions, mais à enlever plus tard
             //g.drawLine(currentEntity.getX(), currentEntity.getY(), (currentEntity.getX() + currentEntity.getWidth()), (currentEntity.getY() + currentEntity.getHeight()));
         }
@@ -178,6 +183,9 @@ public class Jeu extends BasicGame implements Observateur {
             case 0:
                 doGameOver();
         }
+
+        g.drawString("Minerai dans le vaisseau: " + String.valueOf(Cargo.getCargaisonVaisseau()) + " / " + Cargo.CARGAISON_VAISSEAU_MAX, 10, 84);
+        g.drawString("Minerai envoyé sur Mars: " + String.valueOf(Cargo.getCargaisonMars()), 10, 104);
     }
 
     private void doGameOver() {
@@ -222,7 +230,7 @@ public class Jeu extends BasicGame implements Observateur {
                 collisionables.add(laser);
                 break;
             case 'e':
-                System.out.println("vider");
+                Cargo.transferCargaison();
                 break;
         }
     }
