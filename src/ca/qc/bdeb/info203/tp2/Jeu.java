@@ -243,6 +243,15 @@ public class Jeu extends BasicGame implements Observateur {
             case Input.KEY_ESCAPE:
                 gc.exit();
                 break;
+            case Input.KEY_O:
+                if (gameOver) {
+                    try {
+                        this.init(gc);
+                    } catch (SlickException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
         }
     }
 
@@ -321,14 +330,14 @@ public class Jeu extends BasicGame implements Observateur {
             vaisseau.setPeutTirer(false);
         }
 
-        try {
-            Thread.sleep(1000);
-//            this.init(gc);
-            gc.exit();
-        } catch (InterruptedException ignored) {
-//        } catch (SlickException e) {
-//            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(1000);
+////            this.init(gc);
+//            gc.exit();
+//        } catch (InterruptedException ignored) {
+////        } catch (SlickException e) {
+////            e.printStackTrace();
+//        }
     }
 
     public void doBackground(GameContainer gc, Graphics g) {

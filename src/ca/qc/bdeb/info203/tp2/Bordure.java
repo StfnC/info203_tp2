@@ -36,7 +36,7 @@ public class Bordure implements Collisionable, Mur {
             } else if (directionCollision.equals(LEFT)) {
                 vaisseau.setLocation(0f, vaisseau.getY());
             } else if (directionCollision.equals(RIGHT)) {
-                vaisseau.setLocation(Main.HEIGHT - vaisseau.getWidth(), vaisseau.getY());
+                vaisseau.setLocation(Main.WIDTH - vaisseau.getWidth(), vaisseau.getY());
             }
         }
 
