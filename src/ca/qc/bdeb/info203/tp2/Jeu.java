@@ -25,6 +25,7 @@ public class Jeu extends BasicGame implements Observateur {
     private static final TailleAsteroide[] TAILLES_ASTEROIDES_GENERES = {TailleAsteroide.TRES_GRAND, TailleAsteroide.GRAND};
     private static final Direction[] DIRECTIONS_POSSIBLES_ASTEROIDES = {Direction.DOWN, Direction.RIGHT, Direction.LEFT};
 
+    private ArrayList<Integer> listeKeys = new ArrayList<>();
     private ArrayList<Entite> entiteListe = new ArrayList<>();
     private ArrayList<Collisionable> collisionables = new ArrayList<>();
     private ArrayList<Entite> listeEntiteDetruites = new ArrayList<>();
@@ -36,8 +37,9 @@ public class Jeu extends BasicGame implements Observateur {
     private Vaisseau vaisseau;
 
     private GameContainer gc;
-    private Sound gameOver;
-    private boolean gameOverSoundPlayed = false;
+    private Input input;
+    private Sound gameOverSound;
+    private boolean gameOverSoundPlayed;
 
     private MoteurCollision moteurCollision;
 
@@ -77,10 +79,20 @@ public class Jeu extends BasicGame implements Observateur {
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
         this.gc = gameContainer;
+        this.input = gc.getInput();
         this.moteurCollision = new MoteurCollision();
 
+        // On nettoie les listes, utile dans le cas où le joueur a recommencé une partie
+        this.entiteListe.clear();
+        this.collisionables.clear();
+        this.listeEntiteCrees.clear();
+        this.listeEntiteDetruites.clear();
+        this.listeKeys.clear();
+
+
         //TODO: Background music
-        gameOver = new Sound("res/Sounds/sfx_lose.wav");
+        gameOverSound = new Sound("res/Sounds/sfx_lose.wav");
+        gameOverSoundPlayed = false;
 
         backgroundTile = new Image("res/bgTile.png");
         heart = new Image("res/health.png");
@@ -99,6 +111,8 @@ public class Jeu extends BasicGame implements Observateur {
 
     @Override
     public void update(GameContainer gameContainer, int delta) throws SlickException {
+        getKeys();
+        traiterKeys();
         // TODO: Verifier que les noms des constantes respectent les conventions
 
         // TODO: S'assurer de detruire les asteroides hors de l'ecran
@@ -176,13 +190,71 @@ public class Jeu extends BasicGame implements Observateur {
                 heart.draw(10, 10);
                 break;
             case 0:
-                //TODO: Ajouter fonction qui demande de rejouer (le prof veut ça)
+                g.drawString("Voulez-vous rejouer (O pour rejouer, ESC pour quitter)", WIDTH / 2 - 300, HEIGHT / 2);
 
                 doGameOver();
         }
 
         g.drawString("Minerai dans le vaisseau: " + String.valueOf(vaisseau.getCargo().getCargaisonVaisseau()) + " / " + vaisseau.getCargo().getCargaisonVaisseauMax(), 10, 84);
         g.drawString("Minerai envoyé sur Mars: " + String.valueOf(vaisseau.getCargo().getCargaisonMars()), 10, 104);
+    }
+
+    private void getKeys() {
+
+    }
+
+    private void traiterKeys() {
+
+    }
+
+    @Override
+    public void keyPressed(int key, char c) {
+        switch (c) {
+            case 'w':
+                vaisseau.setDirection(UP);
+                vaisseau.setSeDeplace(true);
+                break;
+            case 'a':
+                vaisseau.setDirection(LEFT);
+                vaisseau.setSeDeplace(true);
+                break;
+            case 's':
+                vaisseau.setDirection(DOWN);
+                vaisseau.setSeDeplace(true);
+                break;
+            case 'd':
+                vaisseau.setDirection(RIGHT);
+                vaisseau.setSeDeplace(true);
+                break;
+            case ' ':
+                float positionX = (vaisseau.getX() + vaisseau.getWidth() / 2) - 8;
+                float positionY = vaisseau.getY() - 32;
+
+                Laser laser = new Laser(positionX, positionY, 16, 32, "res/laser.png");
+
+                entiteListe.add(laser);
+                collisionables.add(laser);
+                break;
+            case 'e':
+                vaisseau.getCargo().transferCargaison();
+                break;
+        }
+    }
+
+    @Override
+    public void keyReleased(int key, char c) {
+        // FIXME: Bug en appuyant sur plusieurs direction trop vite
+        switch (key) {
+            case Input.KEY_ESCAPE:
+                doGameOver();
+                break;
+            case Input.KEY_W:
+            case Input.KEY_A:
+            case Input.KEY_S:
+            case Input.KEY_D:
+                vaisseau.setSeDeplace(false);
+                break;
+        }
     }
 
     public void genererAsteroideRandom() throws SlickException {
@@ -242,14 +314,17 @@ public class Jeu extends BasicGame implements Observateur {
 
     public void doGameOver() {
         if (!gameOverSoundPlayed) {
-            gameOver.play();
+            gameOverSound.play();
             gameOverSoundPlayed = true;
         }
 
         try {
             Thread.sleep(1000);
+//            this.init(gc);
             gc.exit();
         } catch (InterruptedException ignored) {
+//        } catch (SlickException e) {
+//            e.printStackTrace();
         }
     }
 
@@ -258,56 +333,6 @@ public class Jeu extends BasicGame implements Observateur {
             for (long j = scalingValue % 256 - 256; j < HEIGHT; j = j + 256) {
                 g.drawImage(backgroundTile, i, j);
             }
-        }
-    }
-
-    @Override
-    public void keyPressed(int key, char c) {
-        switch (c) {
-            case 'w':
-                vaisseau.setDirection(UP);
-                vaisseau.setSeDeplace(true);
-                break;
-            case 'a':
-                vaisseau.setDirection(LEFT);
-                vaisseau.setSeDeplace(true);
-                break;
-            case 's':
-                vaisseau.setDirection(DOWN);
-                vaisseau.setSeDeplace(true);
-                break;
-            case 'd':
-                vaisseau.setDirection(RIGHT);
-                vaisseau.setSeDeplace(true);
-                break;
-            case ' ':
-                float positionX = (vaisseau.getX() + vaisseau.getWidth() / 2) - 8;
-                float positionY = vaisseau.getY() - 32;
-
-                Laser laser = new Laser(positionX, positionY, 16, 32, "res/laser.png");
-
-                entiteListe.add(laser);
-                collisionables.add(laser);
-                break;
-            case 'e':
-                vaisseau.getCargo().transferCargaison();
-                break;
-        }
-    }
-
-    @Override
-    public void keyReleased(int key, char c) {
-        // FIXME: Bug en appuyant sur plusieurs direction trop vite
-        switch (key) {
-            case Input.KEY_ESCAPE:
-                doGameOver();
-                break;
-            case Input.KEY_W:
-            case Input.KEY_A:
-            case Input.KEY_S:
-            case Input.KEY_D:
-                vaisseau.setSeDeplace(false);
-                break;
         }
     }
 
