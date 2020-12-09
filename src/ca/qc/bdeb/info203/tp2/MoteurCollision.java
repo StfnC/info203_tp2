@@ -38,9 +38,9 @@ public class MoteurCollision {
     public void detecterCollisionMur(Collisionable objetEnCollision, Collisionable murs) {
         // FIXME: Très hacky et hardcoded pour le moment, juste pour test, à modifier
         boolean topOut = objetEnCollision.getRectangle().getY() < 0;
-        boolean bottomOut = objetEnCollision.getRectangle().getY() + objetEnCollision.getRectangle().getHeight() > Jeu.getHEIGHT();
+        boolean bottomOut = objetEnCollision.getRectangle().getY() + objetEnCollision.getRectangle().getHeight() > Main.HEIGHT;
         boolean leftOut = objetEnCollision.getRectangle().getX() < 0;
-        boolean rightOut = objetEnCollision.getRectangle().getX() + objetEnCollision.getRectangle().getWidth() > Jeu.getWIDTH();
+        boolean rightOut = objetEnCollision.getRectangle().getX() + objetEnCollision.getRectangle().getWidth() > Main.HEIGHT;
 
         // FIXME: Y a une facon plus clean de faire
         if (topOut) {

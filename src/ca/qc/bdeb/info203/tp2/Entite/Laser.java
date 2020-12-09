@@ -3,6 +3,7 @@ package ca.qc.bdeb.info203.tp2.Entite;
 import ca.qc.bdeb.info203.tp2.Collisionable;
 import ca.qc.bdeb.info203.tp2.Enum.Direction;
 import ca.qc.bdeb.info203.tp2.Jeu;
+import ca.qc.bdeb.info203.tp2.Main;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
@@ -36,7 +37,7 @@ public class Laser extends Entite {
 
     @Override
     public void deplacer(int delta) {
-        if (y >= (initialY - Jeu.getHEIGHT() / 2)) {
+        if (y >= (initialY - Main.HEIGHT / 2)) {
             y -= Jeu.getScalingVitesse() * VITESSE_LASER * delta;
         } else {
             detruire = true;

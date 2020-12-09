@@ -12,14 +12,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Jeu extends BasicGame implements Observateur {
-    private static final int WIDTH = 1024;
-    private static final int HEIGHT = 800;
     private static final int DELAI_INVULNERABILITE = 3000;
     private static final int DELAI_SPAWN_ASTEROIDES = 1500;
     private static final int ESPACE_ENTRE_COEURS = 10;
 
     private static final float SCALING_VITESSE = 0.1f;
-    private static final String GAME_TITLE = "SS Temp";
 
     private static final TailleAsteroide[] TAILLES_ASTEROIDES_GENERES = {TailleAsteroide.TRES_GRAND, TailleAsteroide.GRAND};
     private static final Direction[] DIRECTIONS_POSSIBLES_ASTEROIDES = {Direction.DOWN, Direction.RIGHT, Direction.LEFT};
@@ -50,29 +47,6 @@ public class Jeu extends BasicGame implements Observateur {
         super(title);
     }
 
-    public static void main(String[] args) throws SlickException {
-        // TODO: Deplacer le main dans un fichier Main, plus clean
-
-        AppGameContainer jeu = new AppGameContainer(new Jeu(GAME_TITLE));
-
-        jeu.setDisplayMode(WIDTH, HEIGHT, false);
-        jeu.setIcon("res/icon.png");
-        jeu.setAlwaysRender(true);
-        jeu.setShowFPS(false);
-
-        jeu.setTargetFrameRate(60);
-
-        jeu.start();
-    }
-
-    public static int getWIDTH() {
-        return WIDTH;
-    }
-
-    public static int getHEIGHT() {
-        return HEIGHT;
-    }
-
     public static float getScalingVitesse() {
         return SCALING_VITESSE;
     }
@@ -99,7 +73,7 @@ public class Jeu extends BasicGame implements Observateur {
         heart = new Image("res/health.png");
 
         vaisseau = new Vaisseau(0, 0, 128, 128, "res/ship.png");
-        vaisseau.setLocation((WIDTH / 2 - vaisseau.getWidth() / 2), (float) (HEIGHT * 0.7));
+        vaisseau.setLocation((Main.WIDTH / 2 - vaisseau.getWidth() / 2), (float) (Main.HEIGHT * 0.7));
         vaisseau.addObservateur(this);
 
         Collisionable bordures = new Bordure((int) vaisseau.getWidth(), (int) vaisseau.getHeight());
@@ -177,7 +151,7 @@ public class Jeu extends BasicGame implements Observateur {
             dessinerCoeurs();
         } else {
             // Le - 300 est pour centrer le texte
-            g.drawString("Voulez-vous rejouer (O pour rejouer, ESC pour quitter)", WIDTH / 2 - 300, HEIGHT / 2);
+            g.drawString("Voulez-vous rejouer (O pour rejouer, ESC pour quitter)", Main.WIDTH / 2 - 300, Main.HEIGHT / 2);
             doGameOver();
         }
 
@@ -305,16 +279,16 @@ public class Jeu extends BasicGame implements Observateur {
             case UP:
                 break;
             case LEFT:
-                posX = WIDTH + asteroide.getWidth();
-                posY = r.nextInt(WIDTH / 4);
+                posX = Main.WIDTH + asteroide.getWidth();
+                posY = r.nextInt(Main.WIDTH / 4);
                 break;
             case DOWN:
-                posX = r.nextInt(WIDTH - (int) asteroide.getWidth());
+                posX = r.nextInt(Main.WIDTH - (int) asteroide.getWidth());
                 posY = -asteroide.getHeight();
                 break;
             case RIGHT:
                 posX = -asteroide.getWidth();
-                posY = r.nextInt(WIDTH / 4);
+                posY = r.nextInt(Main.WIDTH / 4);
                 break;
         }
         asteroide.setLocation(posX, posY);
@@ -358,20 +332,13 @@ public class Jeu extends BasicGame implements Observateur {
     }
 
     public void doBackground(GameContainer gc, Graphics g) {
-        for (int i = 0; i < WIDTH; i = i + 256) {
-            for (long j = scalingValue % 256 - 256; j < HEIGHT; j = j + 256) {
+        for (int i = 0; i < Main.WIDTH; i = i + 256) {
+            for (long j = scalingValue % 256 - 256; j < Main.HEIGHT; j = j + 256) {
                 g.drawImage(backgroundTile, i, j);
             }
         }
     }
 
-    public ArrayList<Entite> getEntiteListe() {
-        return entiteListe;
-    }
-
-    public ArrayList<Collisionable> getCollisionables() {
-        return collisionables;
-    }
 
     @Override
     public void update(long millis) {

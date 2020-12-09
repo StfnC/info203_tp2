@@ -13,7 +13,7 @@ public class Bordure implements Collisionable, Mur {
     public Bordure(int largeurVaisseau, int hauteurVaisseau) {
         // TODO: Rendre la ligne beaucoup plus lisible, si besoin
         // Crée un rectangle qui a l'espace d'un vaisseau entre lui et les bords de la fenêtre
-        rectangle = new Rectangle(largeurVaisseau, hauteurVaisseau, Jeu.getWIDTH() - 2 * largeurVaisseau, Jeu.getHEIGHT() - 2 * hauteurVaisseau);
+        rectangle = new Rectangle(largeurVaisseau, hauteurVaisseau, Main.WIDTH - 2 * largeurVaisseau, Main.HEIGHT - 2 * hauteurVaisseau);
     }
 
     @Override
@@ -32,11 +32,11 @@ public class Bordure implements Collisionable, Mur {
             if (directionCollision.equals(UP)) {
                 vaisseau.setLocation(vaisseau.getX(), 0f);
             } else if (directionCollision.equals(DOWN)) {
-                vaisseau.setLocation(vaisseau.getX(), Jeu.getHEIGHT() - vaisseau.getHeight());
+                vaisseau.setLocation(vaisseau.getX(), Main.HEIGHT - vaisseau.getHeight());
             } else if (directionCollision.equals(LEFT)) {
                 vaisseau.setLocation(0f, vaisseau.getY());
             } else if (directionCollision.equals(RIGHT)) {
-                vaisseau.setLocation(Jeu.getWIDTH() - vaisseau.getWidth(), vaisseau.getY());
+                vaisseau.setLocation(Main.HEIGHT - vaisseau.getWidth(), vaisseau.getY());
             }
         }
 
