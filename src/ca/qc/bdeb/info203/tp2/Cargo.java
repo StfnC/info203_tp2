@@ -1,12 +1,16 @@
 package ca.qc.bdeb.info203.tp2;
 
 import ca.qc.bdeb.info203.tp2.Entite.Asteroide;
+import ca.qc.bdeb.info203.tp2.Entite.Vaisseau;
 
 public class Cargo {
-
-    public static final int CARGAISON_VAISSEAU_MAX = 128 * 128;
+    private final int CARGAISON_VAISSEAU_MAX;
     private int cargaisonVaisseau = 0;
     private int cargaisonMars = 0;
+
+    public Cargo(Vaisseau vaisseau) {
+        CARGAISON_VAISSEAU_MAX = (int) Math.pow(vaisseau.getHeight(), 2);
+    }
 
     public void transferCargaison() {
         cargaisonMars += cargaisonVaisseau;
@@ -21,6 +25,10 @@ public class Cargo {
         } else {
             cargaisonVaisseau += cargaison;
         }
+    }
+
+    public int getCargaisonVaisseauMax() {
+        return CARGAISON_VAISSEAU_MAX;
     }
 
     public int getCargaisonVaisseau() {

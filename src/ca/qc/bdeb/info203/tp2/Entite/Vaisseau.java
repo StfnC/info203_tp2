@@ -10,7 +10,7 @@ public class Vaisseau extends Entite implements Observable {
     private static final int VITESSE_VAISSEAU = 7;
 
     private Sound shieldDown;
-    private Cargo cargo = new Cargo();
+    private Cargo cargo;
     private int lives;
     private boolean vulnerable = true;
     private boolean seDeplace = false;
@@ -19,6 +19,7 @@ public class Vaisseau extends Entite implements Observable {
 
     public Vaisseau(float x, float y, float width, float height, String imagePath) throws SlickException {
         super(x, y, width, height, imagePath);
+        this.cargo = new Cargo(this);
         lives = 3;
         shieldDown = new Sound("res/Sounds/sfx_shieldDown.wav");
     }

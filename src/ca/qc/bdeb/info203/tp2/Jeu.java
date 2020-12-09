@@ -162,6 +162,7 @@ public class Jeu extends BasicGame implements Observateur {
         }
 
         switch (vaisseau.getLives()) {
+            // TODO: Créer une fonction qui permet de dessiner un nombre dynamique de coeurs, sans hardcoder
             case 3:
                 heart.draw(10, 10);
                 heart.draw(84, 10);
@@ -180,7 +181,7 @@ public class Jeu extends BasicGame implements Observateur {
                 doGameOver();
         }
 
-        g.drawString("Minerai dans le vaisseau: " + String.valueOf(vaisseau.getCargo().getCargaisonVaisseau()) + " / " + Cargo.CARGAISON_VAISSEAU_MAX, 10, 84);
+        g.drawString("Minerai dans le vaisseau: " + String.valueOf(vaisseau.getCargo().getCargaisonVaisseau()) + " / " + vaisseau.getCargo().getCargaisonVaisseauMax(), 10, 84);
         g.drawString("Minerai envoyé sur Mars: " + String.valueOf(vaisseau.getCargo().getCargaisonMars()), 10, 104);
     }
 
