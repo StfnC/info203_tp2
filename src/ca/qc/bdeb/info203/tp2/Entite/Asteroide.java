@@ -2,7 +2,7 @@ package ca.qc.bdeb.info203.tp2.Entite;
 
 import ca.qc.bdeb.info203.tp2.Cargo;
 import ca.qc.bdeb.info203.tp2.Collisionable;
-import ca.qc.bdeb.info203.tp2.Direction;
+import ca.qc.bdeb.info203.tp2.Enum.Direction;
 import ca.qc.bdeb.info203.tp2.Jeu;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -18,7 +18,6 @@ public class Asteroide extends Entite {
     private final Image ast2;
     private final Image ast3;
     private final Image ast4;
-
     private Direction direction;
 
     private boolean isSeparer;

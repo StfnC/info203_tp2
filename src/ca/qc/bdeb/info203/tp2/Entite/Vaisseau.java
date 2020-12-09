@@ -1,7 +1,7 @@
 package ca.qc.bdeb.info203.tp2.Entite;
 
 import ca.qc.bdeb.info203.tp2.*;
-import org.lwjgl.Sys;
+import ca.qc.bdeb.info203.tp2.Enum.Direction;
 import org.newdawn.slick.*;
 
 import java.util.ArrayList;

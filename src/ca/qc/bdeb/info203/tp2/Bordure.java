@@ -1,10 +1,11 @@
 package ca.qc.bdeb.info203.tp2;
 
 import ca.qc.bdeb.info203.tp2.Entite.Vaisseau;
+import ca.qc.bdeb.info203.tp2.Enum.Direction;
 
 import java.awt.*;
 
-import static ca.qc.bdeb.info203.tp2.Direction.*;
+import static ca.qc.bdeb.info203.tp2.Enum.Direction.*;
 
 public class Bordure implements Collisionable, Mur {
     private final Rectangle rectangle;

@@ -9,7 +9,7 @@ import org.newdawn.slick.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static ca.qc.bdeb.info203.tp2.Direction.*;
+import static ca.qc.bdeb.info203.tp2.Enum.Direction.*;
 
 public class Jeu extends BasicGame implements Observateur {
     private static final int WIDTH = 1024;

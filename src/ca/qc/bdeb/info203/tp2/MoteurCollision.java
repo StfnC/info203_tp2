@@ -1,6 +1,7 @@
 package ca.qc.bdeb.info203.tp2;
 
 import ca.qc.bdeb.info203.tp2.Entite.Vaisseau;
+import ca.qc.bdeb.info203.tp2.Enum.Direction;
 
 import java.util.ArrayList;
 
