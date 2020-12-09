@@ -26,6 +26,7 @@ public class Jeu extends BasicGame implements Observateur {
     private static final TailleAsteroide[] TAILLES_ASTEROIDES_GENERES = {TailleAsteroide.TRES_GRAND, TailleAsteroide.GRAND};
     private static final Direction[] DIRECTIONS_POSSIBLES_ASTEROIDES = {Direction.DOWN, Direction.RIGHT, Direction.LEFT};
 
+    private ArrayList<Integer> listeTouchesMouvement = new ArrayList<>();
     private ArrayList<Entite> entiteListe = new ArrayList<>();
     private ArrayList<Collisionable> collisionables = new ArrayList<>();
     private ArrayList<Entite> listeEntiteDetruites = new ArrayList<>();
@@ -37,6 +38,7 @@ public class Jeu extends BasicGame implements Observateur {
     private Vaisseau vaisseau;
 
     private GameContainer gc;
+    private Input input;
     private Sound gameOverSound;
     private boolean gameOverSoundPlayed;
 
@@ -51,6 +53,8 @@ public class Jeu extends BasicGame implements Observateur {
     }
 
     public static void main(String[] args) throws SlickException {
+        // TODO: Deplacer le main dans un fichier Main, plus clean
+
         AppGameContainer jeu = new AppGameContainer(new Jeu(GAME_TITLE));
 
         jeu.setDisplayMode(WIDTH, HEIGHT, false);
@@ -78,9 +82,11 @@ public class Jeu extends BasicGame implements Observateur {
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
         this.gc = gameContainer;
+        this.input = gc.getInput();
         this.moteurCollision = new MoteurCollision();
 
         // On nettoie les listes, utile dans le cas où le joueur a recommencé une partie
+        this.listeTouchesMouvement.clear();
         this.entiteListe.clear();
         this.collisionables.clear();
         this.listeEntiteCrees.clear();
@@ -112,9 +118,10 @@ public class Jeu extends BasicGame implements Observateur {
 
         // TODO: S'assurer de detruire les asteroides hors de l'ecran
 
-        // TODO: Generation des asteroides
-
         // TODO: Garbage collector a certains intervalles
+        getTouchesMouvement();
+        traiterTouchesMouvement();
+
         if (System.currentTimeMillis() - momentSpawnAsteroide > DELAI_SPAWN_ASTEROIDES) {
             genererAsteroideRandom();
             momentSpawnAsteroide = System.currentTimeMillis();
@@ -126,8 +133,6 @@ public class Jeu extends BasicGame implements Observateur {
             if (destruction) {
                 listeEntiteDetruites.add(currentEntity);
             }
-            // TODO: -Refactor cette partie de code pour prendre avantage des interfaces
-            //       -On devrait pouvoir seulement appeler currentEntity.mouvementEntite sans utiliser instanceof
             if (currentEntity instanceof Asteroide) {
                 Asteroide asteroide = (Asteroide) currentEntity;
                 if (asteroide.isSeparer()) {
@@ -193,26 +198,68 @@ public class Jeu extends BasicGame implements Observateur {
         g.drawString("Minerai envoyé sur Mars: " + String.valueOf(vaisseau.getCargo().getCargaisonMars()), 10, 104);
     }
 
+    public void getTouchesMouvement() {
+        // W
+        if (input.isKeyDown(Input.KEY_W)) {
+            if (!listeTouchesMouvement.contains(Input.KEY_W)) {
+                listeTouchesMouvement.add(Input.KEY_W);
+            }
+        } else {
+            listeTouchesMouvement.remove((Integer) Input.KEY_W);
+        }
+        // A
+        if (input.isKeyDown(Input.KEY_A)) {
+            if (!listeTouchesMouvement.contains(Input.KEY_A)) {
+                listeTouchesMouvement.add(Input.KEY_A);
+            }
+        } else {
+            listeTouchesMouvement.remove((Integer) Input.KEY_A);
+        }
+        // S
+        if (input.isKeyDown(Input.KEY_S)) {
+            if (!listeTouchesMouvement.contains(Input.KEY_S)) {
+                listeTouchesMouvement.add(Input.KEY_S);
+            }
+        } else {
+            listeTouchesMouvement.remove((Integer) Input.KEY_S);
+        }
+        // D
+        if (input.isKeyDown(Input.KEY_D)) {
+            if (!listeTouchesMouvement.contains(Input.KEY_D)) {
+                listeTouchesMouvement.add(Input.KEY_D);
+            }
+        } else {
+            listeTouchesMouvement.remove((Integer) Input.KEY_D);
+        }
+    }
+
+    public void traiterTouchesMouvement() {
+        // W
+        if (listeTouchesMouvement.contains(Input.KEY_W)) {
+            vaisseau.setDirection(Direction.UP);
+            vaisseau.setSeDeplace(true);
+        }
+        // A
+        if (listeTouchesMouvement.contains(Input.KEY_A)) {
+            vaisseau.setDirection(Direction.LEFT);
+            vaisseau.setSeDeplace(true);
+        }
+        // S
+        if (listeTouchesMouvement.contains(Input.KEY_S)) {
+            vaisseau.setDirection(Direction.DOWN);
+            vaisseau.setSeDeplace(true);
+        }
+        // D
+        if (listeTouchesMouvement.contains(Input.KEY_D)) {
+            vaisseau.setDirection(Direction.RIGHT);
+            vaisseau.setSeDeplace(true);
+        }
+    }
+
     @Override
     public void keyPressed(int key, char c) {
-        switch (c) {
-            case 'w':
-                vaisseau.setDirection(UP);
-                vaisseau.setSeDeplace(true);
-                break;
-            case 'a':
-                vaisseau.setDirection(LEFT);
-                vaisseau.setSeDeplace(true);
-                break;
-            case 's':
-                vaisseau.setDirection(DOWN);
-                vaisseau.setSeDeplace(true);
-                break;
-            case 'd':
-                vaisseau.setDirection(RIGHT);
-                vaisseau.setSeDeplace(true);
-                break;
-            case ' ':
+        switch (key) {
+            case Input.KEY_SPACE:
                 float positionX = (vaisseau.getX() + vaisseau.getWidth() / 2) - 8;
                 float positionY = vaisseau.getY() - 32;
 
@@ -221,19 +268,18 @@ public class Jeu extends BasicGame implements Observateur {
                 entiteListe.add(laser);
                 collisionables.add(laser);
                 break;
-            case 'e':
+            case Input.KEY_E:
                 vaisseau.getCargo().transferCargaison();
+                break;
+            case Input.KEY_ESCAPE:
+                doGameOver();
                 break;
         }
     }
 
     @Override
     public void keyReleased(int key, char c) {
-        // FIXME: Bug en appuyant sur plusieurs direction trop vite
         switch (key) {
-            case Input.KEY_ESCAPE:
-                doGameOver();
-                break;
             case Input.KEY_W:
             case Input.KEY_A:
             case Input.KEY_S:
