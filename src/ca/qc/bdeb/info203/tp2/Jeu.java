@@ -4,6 +4,7 @@ import ca.qc.bdeb.info203.tp2.Entite.Asteroide;
 import ca.qc.bdeb.info203.tp2.Entite.Entite;
 import ca.qc.bdeb.info203.tp2.Entite.Laser;
 import ca.qc.bdeb.info203.tp2.Entite.Vaisseau;
+import ca.qc.bdeb.info203.tp2.Enum.TailleAsteroide;
 import org.newdawn.slick.*;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class Jeu extends BasicGame implements Observateur {
     private static final float SCALING_VITESSE = 0.1f;
     private static final String GAME_TITLE = "SS Temp";
 
-    private static final int[] TAILLES_ASTEROIDES_GENERES = {0, 1};
+    private static final TailleAsteroide[] TAILLES_ASTEROIDES_GENERES = {TailleAsteroide.TRES_GRAND, TailleAsteroide.GRAND};
 
     private ArrayList<Entite> entiteListe = new ArrayList<>();
     private ArrayList<Collisionable> collisionables = new ArrayList<>();
@@ -96,6 +97,8 @@ public class Jeu extends BasicGame implements Observateur {
 
     @Override
     public void update(GameContainer gameContainer, int delta) throws SlickException {
+        // TODO: Verifier que les noms des constantes respectent les conventions
+
         // TODO: S'assurer de detruire les asteroides hors de l'ecran
 
         // TODO: Generation des asteroides
@@ -195,15 +198,16 @@ public class Jeu extends BasicGame implements Observateur {
     }
 
     public void separerAsteroide(Asteroide asteroide) throws SlickException {
-        if (asteroide.index != 4) {
+        if (!asteroide.getTailleAsteroide().equals(TailleAsteroide.TRES_PETIT)) {
             float positionXAst1 = asteroide.getX() - asteroide.getWidth() / 8;
             float positionYAst1 = asteroide.getY() + asteroide.getHeight() / 2;
 
             float positionXAst2 = asteroide.getX() + (5 * asteroide.getWidth()) / 8;
             float positionYAst2 = asteroide.getY() + asteroide.getHeight() / 2;
 
-            Asteroide ast1 = new Asteroide(positionXAst1, positionYAst1, asteroide.index + 1);
-            Asteroide ast2 = new Asteroide(positionXAst2, positionYAst2, asteroide.index + 1);
+            TailleAsteroide taillePlusPetite = TailleAsteroide.tailleParValeurNumerique(asteroide.getTailleAsteroide().valeurNumerique - 1);
+            Asteroide ast1 = new Asteroide(positionXAst1, positionYAst1, taillePlusPetite);
+            Asteroide ast2 = new Asteroide(positionXAst2, positionYAst2, taillePlusPetite);
 
             listeEntiteCrees.add(ast1);
             listeEntiteCrees.add(ast2);

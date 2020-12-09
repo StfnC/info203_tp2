@@ -10,7 +10,6 @@ import java.awt.*;
 //TODO: Ajouter interface PeutCollisionner
 
 public abstract class Entite implements Deplacable, Collisionable {
-    public int index;
     protected float x, y, width, height;
     protected Image image;
     protected boolean detruire = false;
@@ -37,10 +36,9 @@ public abstract class Entite implements Deplacable, Collisionable {
         }
     }
 
-    public Entite(float x, float y, int index) {
+    public Entite(float x, float y) {
         this.x = x;
         this.y = y;
-        this.index = index;
     }
 
     // Permet de déplacer l'entité
