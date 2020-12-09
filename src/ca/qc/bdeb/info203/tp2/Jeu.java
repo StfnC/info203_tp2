@@ -180,8 +180,8 @@ public class Jeu extends BasicGame implements Observateur {
                 doGameOver();
         }
 
-        g.drawString("Minerai dans le vaisseau: " + String.valueOf(Cargo.getCargaisonVaisseau()) + " / " + Cargo.CARGAISON_VAISSEAU_MAX, 10, 84);
-        g.drawString("Minerai envoyé sur Mars: " + String.valueOf(Cargo.getCargaisonMars()), 10, 104);
+        g.drawString("Minerai dans le vaisseau: " + String.valueOf(vaisseau.getCargo().getCargaisonVaisseau()) + " / " + Cargo.CARGAISON_VAISSEAU_MAX, 10, 84);
+        g.drawString("Minerai envoyé sur Mars: " + String.valueOf(vaisseau.getCargo().getCargaisonMars()), 10, 104);
     }
 
     public void genererAsteroideRandom() throws SlickException {
@@ -289,7 +289,7 @@ public class Jeu extends BasicGame implements Observateur {
                 collisionables.add(laser);
                 break;
             case 'e':
-                Cargo.transferCargaison();
+                vaisseau.getCargo().transferCargaison();
                 break;
         }
     }

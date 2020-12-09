@@ -10,6 +10,7 @@ public class Vaisseau extends Entite implements Observable {
     private static final int VITESSE_VAISSEAU = 7;
 
     private Sound shieldDown;
+    private Cargo cargo = new Cargo();
     private int lives;
     private boolean vulnerable = true;
     private boolean seDeplace = false;
@@ -57,6 +58,8 @@ public class Vaisseau extends Entite implements Observable {
             if ((asteroide.getHeight() >= this.getHeight()) && this.vulnerable) {
                 this.enleverVie();
                 this.vulnerable = false;
+            } else if (asteroide.getHeight() < this.getHeight()) {
+                this.cargo.addCargaisonVaisseau(asteroide);
             }
         }
     }
@@ -104,5 +107,9 @@ public class Vaisseau extends Entite implements Observable {
 
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+
+    public Cargo getCargo() {
+        return cargo;
     }
 }

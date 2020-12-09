@@ -91,7 +91,6 @@ public class Asteroide extends Entite {
             Vaisseau vaisseau = (Vaisseau) objetEnCollision;
             if (vaisseau.getHeight() > this.getHeight()) {
                 this.detruire = true;
-                Cargo.addCargaisonVaisseau(this);
                 sonAsteroideBroye.play();
             }
         } else if (objetEnCollision instanceof Laser) {
