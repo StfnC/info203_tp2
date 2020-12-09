@@ -4,6 +4,7 @@ import ca.qc.bdeb.info203.tp2.Entite.Asteroide;
 import ca.qc.bdeb.info203.tp2.Entite.Entite;
 import ca.qc.bdeb.info203.tp2.Entite.Laser;
 import ca.qc.bdeb.info203.tp2.Entite.Vaisseau;
+import ca.qc.bdeb.info203.tp2.Enum.Direction;
 import ca.qc.bdeb.info203.tp2.Enum.TailleAsteroide;
 import org.newdawn.slick.*;
 
@@ -22,6 +23,7 @@ public class Jeu extends BasicGame implements Observateur {
     private static final String GAME_TITLE = "SS Temp";
 
     private static final TailleAsteroide[] TAILLES_ASTEROIDES_GENERES = {TailleAsteroide.TRES_GRAND, TailleAsteroide.GRAND};
+    private static final Direction[] DIRECTIONS_POSSIBLES_ASTEROIDES = {Direction.DOWN, Direction.RIGHT, Direction.LEFT};
 
     private ArrayList<Entite> entiteListe = new ArrayList<>();
     private ArrayList<Collisionable> collisionables = new ArrayList<>();
@@ -184,17 +186,38 @@ public class Jeu extends BasicGame implements Observateur {
 
     public void genererAsteroideRandom() throws SlickException {
         Random r = new Random();
-        Asteroide asteroide = new Asteroide(0, 0, TAILLES_ASTEROIDES_GENERES[r.nextInt(2)]);
-        float posX = genererEntierDansIntervalle(0, WIDTH - (int) asteroide.getWidth());
-        float posY = -asteroide.getHeight();
-        asteroide.setLocation(posX, posY);
+        TailleAsteroide tailleAsteroide = TAILLES_ASTEROIDES_GENERES[r.nextInt(TAILLES_ASTEROIDES_GENERES.length)];
+        // Choisi une direction au hasard
+        Direction direction = DIRECTIONS_POSSIBLES_ASTEROIDES[r.nextInt(DIRECTIONS_POSSIBLES_ASTEROIDES.length)];
+        Asteroide asteroide = new Asteroide(0, 0, tailleAsteroide, direction);
+        trouverPositionDepartAsteroide(asteroide);
         entiteListe.add(asteroide);
         collisionables.add(asteroide);
     }
 
-    public float genererEntierDansIntervalle(int plancher, int plafond) {
+    private void trouverPositionDepartAsteroide(Asteroide asteroide) {
         Random r = new Random();
-        return r.nextInt(plafond) + plancher;
+
+        float posX = 0;
+        float posY = 0;
+
+        switch (asteroide.getDirection()) {
+            case UP:
+                break;
+            case LEFT:
+                posX = WIDTH + asteroide.getWidth();
+                posY = r.nextInt(WIDTH / 4);
+                break;
+            case DOWN:
+                posX = r.nextInt(WIDTH - (int) asteroide.getWidth());
+                posY = -asteroide.getHeight();
+                break;
+            case RIGHT:
+                posX = -asteroide.getWidth();
+                posY = r.nextInt(WIDTH / 4);
+                break;
+        }
+        asteroide.setLocation(posX, posY);
     }
 
     public void separerAsteroide(Asteroide asteroide) throws SlickException {
@@ -206,8 +229,8 @@ public class Jeu extends BasicGame implements Observateur {
             float positionYAst2 = asteroide.getY() + asteroide.getHeight() / 2;
 
             TailleAsteroide taillePlusPetite = TailleAsteroide.tailleParValeurNumerique(asteroide.getTailleAsteroide().valeurNumerique - 1);
-            Asteroide ast1 = new Asteroide(positionXAst1, positionYAst1, taillePlusPetite);
-            Asteroide ast2 = new Asteroide(positionXAst2, positionYAst2, taillePlusPetite);
+            Asteroide ast1 = new Asteroide(positionXAst1, positionYAst1, taillePlusPetite, asteroide.getDirection());
+            Asteroide ast2 = new Asteroide(positionXAst2, positionYAst2, taillePlusPetite, asteroide.getDirection());
 
             listeEntiteCrees.add(ast1);
             listeEntiteCrees.add(ast2);

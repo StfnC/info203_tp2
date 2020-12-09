@@ -26,7 +26,7 @@ public class Asteroide extends Entite {
 
     private Sound sonAsteroideBroye;
 
-    public Asteroide(float x, float y, TailleAsteroide tailleAsteroide) throws SlickException {
+    public Asteroide(float x, float y, TailleAsteroide tailleAsteroide, Direction direction) throws SlickException {
         super(x, y);
 
         this.tailleAsteroide = tailleAsteroide;
@@ -41,7 +41,7 @@ public class Asteroide extends Entite {
 
         sonAsteroideBroye = new Sound("res/Sounds/sfx_shieldUp.wav");
 
-        this.direction = Direction.DOWN;
+        this.direction = direction;
     }
 
     private void setImageAsteroide() {
