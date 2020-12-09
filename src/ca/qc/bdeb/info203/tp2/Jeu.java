@@ -4,9 +4,11 @@ import ca.qc.bdeb.info203.tp2.Entite.Asteroide;
 import ca.qc.bdeb.info203.tp2.Entite.Entite;
 import ca.qc.bdeb.info203.tp2.Entite.Laser;
 import ca.qc.bdeb.info203.tp2.Entite.Vaisseau;
+import org.lwjgl.Sys;
 import org.newdawn.slick.*;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import static ca.qc.bdeb.info203.tp2.Direction.DOWN;
 import static ca.qc.bdeb.info203.tp2.Direction.UP;
@@ -15,12 +17,15 @@ public class Jeu extends BasicGame implements Observateur {
     private static final int WIDTH = 1024;
     private static final int HEIGHT = 800;
     private static final int DELAI_INVULNERABILITE = 3000;
+    private static final int DELAI_SPAWN_ASTEROIDES = 1500;
 
     private static final float SCALING_VITESSE = 0.1f;
     private static final String GAME_TITLE = "SS Temp";
 
-    private static final ArrayList<Entite> entiteListe = new ArrayList<>();
-    private static final ArrayList<Collisionable> collisionables = new ArrayList<>();
+    private static final int[] TAILLES_ASTEROIDES_GENERES = {0, 1};
+
+    private ArrayList<Entite> entiteListe = new ArrayList<>();
+    private ArrayList<Collisionable> collisionables = new ArrayList<>();
 
     private Image backgroundTile;
     private Image heart;
@@ -37,6 +42,7 @@ public class Jeu extends BasicGame implements Observateur {
     private MoteurCollision moteurCollision;
 
     private long momentCollision;
+    private long momentSpawnAsteroide;
     private long scalingValue = 0;
 
     public Jeu(String title) {
@@ -103,6 +109,11 @@ public class Jeu extends BasicGame implements Observateur {
         //TODO: Generation des asteroides
 
         //TODO: Garbage collector a certains intervalles
+        if (System.currentTimeMillis() - momentSpawnAsteroide > DELAI_SPAWN_ASTEROIDES) {
+            genererAsteroideRandom();
+            momentSpawnAsteroide = System.currentTimeMillis();
+        }
+
 
         for (Entite currentEntity : entiteListe) {
             boolean destruction = currentEntity.isDetruire();
@@ -197,7 +208,22 @@ public class Jeu extends BasicGame implements Observateur {
         g.drawString("Minerai envoyé sur Mars: " + String.valueOf(Cargo.getCargaisonMars()), 10, 104);
     }
 
-    private void doGameOver() {
+    public void genererAsteroideRandom() throws SlickException {
+        Random r = new Random();
+        Asteroide asteroide = new Asteroide(0, 0, TAILLES_ASTEROIDES_GENERES[r.nextInt(2)]);
+        float posX = genererEntierDansIntervalle(0, WIDTH - (int) asteroide.getWidth());
+        float posY = -asteroide.getHeight();
+        asteroide.setLocation(posX, posY);
+        entiteListe.add(asteroide);
+        collisionables.add(asteroide);
+    }
+
+    public float genererEntierDansIntervalle(int plancher, int plafond) {
+        Random r = new Random();
+        return r.nextInt(plafond) + plancher;
+    }
+
+    public void doGameOver() {
         if (!gameOverSoundPlayed) {
             gameOver.play();
             gameOverSoundPlayed = true;
@@ -210,7 +236,7 @@ public class Jeu extends BasicGame implements Observateur {
         }
     }
 
-    private void doBackground(GameContainer gc, Graphics g) {
+    public void doBackground(GameContainer gc, Graphics g) {
         for (int i = 0; i < WIDTH; i = i + 256) {
             for (long j = scalingValue % 256 - 256; j < HEIGHT; j = j + 256) {
                 g.drawImage(backgroundTile, i, j);
