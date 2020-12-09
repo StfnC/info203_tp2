@@ -7,18 +7,16 @@ import ca.qc.bdeb.info203.tp2.Entite.Vaisseau;
 import ca.qc.bdeb.info203.tp2.Enum.Direction;
 import ca.qc.bdeb.info203.tp2.Enum.TailleAsteroide;
 import org.newdawn.slick.*;
-import org.omg.PortableInterceptor.INACTIVE;
 
 import java.util.ArrayList;
 import java.util.Random;
-
-import static ca.qc.bdeb.info203.tp2.Enum.Direction.*;
 
 public class Jeu extends BasicGame implements Observateur {
     private static final int WIDTH = 1024;
     private static final int HEIGHT = 800;
     private static final int DELAI_INVULNERABILITE = 3000;
     private static final int DELAI_SPAWN_ASTEROIDES = 1500;
+    private static final int ESPACE_ENTRE_COEURS = 10;
 
     private static final float SCALING_VITESSE = 0.1f;
     private static final String GAME_TITLE = "SS Temp";
@@ -40,7 +38,7 @@ public class Jeu extends BasicGame implements Observateur {
     private GameContainer gc;
     private Input input;
     private Sound gameOverSound;
-    private boolean gameOverSoundPlayed;
+    private boolean gameOver;
 
     private MoteurCollision moteurCollision;
 
@@ -95,7 +93,7 @@ public class Jeu extends BasicGame implements Observateur {
 
         //TODO: Background music
         gameOverSound = new Sound("res/Sounds/sfx_lose.wav");
-        gameOverSoundPlayed = false;
+        gameOver = false;
 
         backgroundTile = new Image("res/bgTile.png");
         heart = new Image("res/health.png");
@@ -175,27 +173,22 @@ public class Jeu extends BasicGame implements Observateur {
 //            g.drawLine(currentEntity.getX(), currentEntity.getY(), (currentEntity.getX() + currentEntity.getWidth()), (currentEntity.getY() + currentEntity.getHeight()));
         }
 
-        switch (vaisseau.getLives()) {
-            case 3:
-                heart.draw(10, 10);
-                heart.draw(84, 10);
-                heart.draw(158, 10);
-                break;
-            case 2:
-                heart.draw(10, 10);
-                heart.draw(84, 10);
-                break;
-            case 1:
-                heart.draw(10, 10);
-                break;
-            case 0:
-                g.drawString("Voulez-vous rejouer (O pour rejouer, ESC pour quitter)", WIDTH / 2 - 300, HEIGHT / 2);
-
-                doGameOver();
+        if (vaisseau.getLives() > 0) {
+            dessinerCoeurs();
+        } else {
+            // Le - 300 est pour centrer le texte
+            g.drawString("Voulez-vous rejouer (O pour rejouer, ESC pour quitter)", WIDTH / 2 - 300, HEIGHT / 2);
+            doGameOver();
         }
 
         g.drawString("Minerai dans le vaisseau: " + String.valueOf(vaisseau.getCargo().getCargaisonVaisseau()) + " / " + Cargo.CARGAISON_VAISSEAU_MAX, 10, 84);
         g.drawString("Minerai envoyé sur Mars: " + String.valueOf(vaisseau.getCargo().getCargaisonMars()), 10, 104);
+    }
+
+    public void dessinerCoeurs() {
+        for (int i = 0; i < vaisseau.getLives(); i++) {
+            heart.draw(ESPACE_ENTRE_COEURS + (heart.getWidth() + ESPACE_ENTRE_COEURS) * i, 10);
+        }
     }
 
     public void getTouchesMouvement() {
@@ -345,9 +338,9 @@ public class Jeu extends BasicGame implements Observateur {
     }
 
     public void doGameOver() {
-        if (!gameOverSoundPlayed) {
+        if (!gameOver) {
             gameOverSound.play();
-            gameOverSoundPlayed = true;
+            gameOver = true;
         }
 
         try {
