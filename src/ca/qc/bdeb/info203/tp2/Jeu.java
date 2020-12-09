@@ -26,6 +26,8 @@ public class Jeu extends BasicGame implements Observateur {
 
     private ArrayList<Entite> entiteListe = new ArrayList<>();
     private ArrayList<Collisionable> collisionables = new ArrayList<>();
+    private ArrayList<Entite> listeEntiteDetruites = new ArrayList<>();
+    private ArrayList<Entite> listeEntiteCrees = new ArrayList<>();
 
     private Image backgroundTile;
     private Image heart;
@@ -103,17 +105,15 @@ public class Jeu extends BasicGame implements Observateur {
 
     @Override
     public void update(GameContainer gameContainer, int delta) throws SlickException {
-        ArrayList<Entite> listeEntiteDetruites = new ArrayList<>();
-        ArrayList<Entite> listeEntiteCrees = new ArrayList<>();
+        // TODO: S'assurer de detruire les asteroides hors de l'ecran
 
-        //TODO: Generation des asteroides
+        // TODO: Generation des asteroides
 
-        //TODO: Garbage collector a certains intervalles
+        // TODO: Garbage collector a certains intervalles
         if (System.currentTimeMillis() - momentSpawnAsteroide > DELAI_SPAWN_ASTEROIDES) {
             genererAsteroideRandom();
             momentSpawnAsteroide = System.currentTimeMillis();
         }
-
 
         for (Entite currentEntity : entiteListe) {
             boolean destruction = currentEntity.isDetruire();
@@ -126,23 +126,9 @@ public class Jeu extends BasicGame implements Observateur {
             if (currentEntity instanceof Vaisseau && vaisseauMoving) {
                 currentEntity.mouvementEntite(directionVaisseau, delta);
             } else if (currentEntity instanceof Asteroide) {
-                if (((Asteroide) currentEntity).isSeparer()) {
-                    if (currentEntity.index != 4) {
-                        float positionXAst1 = currentEntity.getX() - currentEntity.getWidth() / 8;
-                        float positionYAst1 = currentEntity.getY() + currentEntity.getHeight() / 2;
-
-                        float positionXAst2 = currentEntity.getX() + (5 * currentEntity.getWidth()) / 8;
-                        float positionYAst2 = currentEntity.getY() + currentEntity.getHeight() / 2;
-
-                        Asteroide ast1 = new Asteroide(positionXAst1, positionYAst1, currentEntity.index + 1);
-                        Asteroide ast2 = new Asteroide(positionXAst2, positionYAst2, currentEntity.index + 1);
-
-                        listeEntiteCrees.add(ast1);
-                        listeEntiteCrees.add(ast2);
-                    } else {
-                        listeEntiteDetruites.add(currentEntity);
-                    }
-
+                Asteroide asteroide = (Asteroide) currentEntity;
+                if (asteroide.isSeparer()) {
+                    separerAsteroide(asteroide);
                 } else {
                     currentEntity.mouvementEntite(DOWN, delta);
                 }
@@ -221,6 +207,24 @@ public class Jeu extends BasicGame implements Observateur {
     public float genererEntierDansIntervalle(int plancher, int plafond) {
         Random r = new Random();
         return r.nextInt(plafond) + plancher;
+    }
+
+    public void separerAsteroide(Asteroide asteroide) throws SlickException {
+        if (asteroide.index != 4) {
+            float positionXAst1 = asteroide.getX() - asteroide.getWidth() / 8;
+            float positionYAst1 = asteroide.getY() + asteroide.getHeight() / 2;
+
+            float positionXAst2 = asteroide.getX() + (5 * asteroide.getWidth()) / 8;
+            float positionYAst2 = asteroide.getY() + asteroide.getHeight() / 2;
+
+            Asteroide ast1 = new Asteroide(positionXAst1, positionYAst1, asteroide.index + 1);
+            Asteroide ast2 = new Asteroide(positionXAst2, positionYAst2, asteroide.index + 1);
+
+            listeEntiteCrees.add(ast1);
+            listeEntiteCrees.add(ast2);
+        } else {
+            listeEntiteDetruites.add(asteroide);
+        }
     }
 
     public void doGameOver() {
