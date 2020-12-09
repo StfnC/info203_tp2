@@ -38,8 +38,8 @@ public class Jeu extends BasicGame implements Observateur {
 
     private GameContainer gc;
     private Input input;
-    private Sound gameOver;
-    private boolean gameOverSoundPlayed = false;
+    private Sound gameOverSound;
+    private boolean gameOverSoundPlayed;
 
     private MoteurCollision moteurCollision;
 
@@ -82,9 +82,17 @@ public class Jeu extends BasicGame implements Observateur {
         this.input = gc.getInput();
         this.moteurCollision = new MoteurCollision();
 
+        // On nettoie les listes, utile dans le cas où le joueur a recommencé une partie
+        this.entiteListe.clear();
+        this.collisionables.clear();
+        this.listeEntiteCrees.clear();
+        this.listeEntiteDetruites.clear();
+        this.listeKeys.clear();
+
 
         //TODO: Background music
-        gameOver = new Sound("res/Sounds/sfx_lose.wav");
+        gameOverSound = new Sound("res/Sounds/sfx_lose.wav");
+        gameOverSoundPlayed = false;
 
         backgroundTile = new Image("res/bgTile.png");
         heart = new Image("res/health.png");
@@ -181,7 +189,7 @@ public class Jeu extends BasicGame implements Observateur {
                 heart.draw(10, 10);
                 break;
             case 0:
-                //TODO: Ajouter fonction qui demande de rejouer (le prof veut ça)
+                g.drawString("Voulez-vous rejouer (O pour rejouer, ESC pour quitter)", WIDTH / 2 - 300, HEIGHT / 2);
 
                 doGameOver();
         }
@@ -305,14 +313,17 @@ public class Jeu extends BasicGame implements Observateur {
 
     public void doGameOver() {
         if (!gameOverSoundPlayed) {
-            gameOver.play();
+            gameOverSound.play();
             gameOverSoundPlayed = true;
         }
 
         try {
             Thread.sleep(1000);
+//            this.init(gc);
             gc.exit();
         } catch (InterruptedException ignored) {
+//        } catch (SlickException e) {
+//            e.printStackTrace();
         }
     }
 
