@@ -12,6 +12,8 @@ public class Vaisseau extends Entite implements Observable {
     private Sound shieldDown;
     private int lives;
     private boolean vulnerable = true;
+    private boolean seDeplace = false;
+    private Direction direction;
     private ArrayList<Observateur> observateurs = new ArrayList<>();
 
     public Vaisseau(float x, float y, float width, float height, String imagePath) throws SlickException {
@@ -21,20 +23,22 @@ public class Vaisseau extends Entite implements Observable {
     }
 
     @Override
-    public void mouvementEntite(Direction direction, int delta) {
-        switch (direction) {
-            case UP:
-                y -= Jeu.getScalingVitesse() * VITESSE_VAISSEAU * delta;
-                break;
-            case LEFT:
-                x -= Jeu.getScalingVitesse() * VITESSE_VAISSEAU * delta;
-                break;
-            case DOWN:
-                y += Jeu.getScalingVitesse() * VITESSE_VAISSEAU * delta;
-                break;
-            case RIGHT:
-                x += Jeu.getScalingVitesse() * VITESSE_VAISSEAU * delta;
-                break;
+    public void deplacer(int delta) {
+        if (seDeplace) {
+            switch (direction) {
+                case UP:
+                    y -= Jeu.getScalingVitesse() * VITESSE_VAISSEAU * delta;
+                    break;
+                case LEFT:
+                    x -= Jeu.getScalingVitesse() * VITESSE_VAISSEAU * delta;
+                    break;
+                case DOWN:
+                    y += Jeu.getScalingVitesse() * VITESSE_VAISSEAU * delta;
+                    break;
+                case RIGHT:
+                    x += Jeu.getScalingVitesse() * VITESSE_VAISSEAU * delta;
+                    break;
+            }
         }
     }
 
@@ -84,5 +88,21 @@ public class Vaisseau extends Entite implements Observable {
         for (Observateur observateur : observateurs) {
             observateur.update(System.currentTimeMillis());
         }
+    }
+
+    public boolean isSeDeplace() {
+        return seDeplace;
+    }
+
+    public void setSeDeplace(boolean seDeplace) {
+        this.seDeplace = seDeplace;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
     }
 }

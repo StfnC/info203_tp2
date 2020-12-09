@@ -4,14 +4,12 @@ import ca.qc.bdeb.info203.tp2.Entite.Asteroide;
 import ca.qc.bdeb.info203.tp2.Entite.Entite;
 import ca.qc.bdeb.info203.tp2.Entite.Laser;
 import ca.qc.bdeb.info203.tp2.Entite.Vaisseau;
-import org.lwjgl.Sys;
 import org.newdawn.slick.*;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import static ca.qc.bdeb.info203.tp2.Direction.DOWN;
-import static ca.qc.bdeb.info203.tp2.Direction.UP;
+import static ca.qc.bdeb.info203.tp2.Direction.*;
 
 public class Jeu extends BasicGame implements Observateur {
     private static final int WIDTH = 1024;
@@ -37,9 +35,6 @@ public class Jeu extends BasicGame implements Observateur {
     private GameContainer gc;
     private Sound gameOver;
     private boolean gameOverSoundPlayed = false;
-
-    private boolean vaisseauMoving = false;
-    private Direction directionVaisseau;
 
     private MoteurCollision moteurCollision;
 
@@ -87,8 +82,6 @@ public class Jeu extends BasicGame implements Observateur {
         backgroundTile = new Image("res/bgTile.png");
         heart = new Image("res/health.png");
 
-        Asteroide asteroide = new Asteroide(100, 100, 0);
-
         vaisseau = new Vaisseau(0, 0, 128, 128, "res/ship.png");
         vaisseau.setLocation((WIDTH / 2 - vaisseau.getWidth() / 2), (float) (HEIGHT * 0.7));
         vaisseau.addObservateur(this);
@@ -96,9 +89,7 @@ public class Jeu extends BasicGame implements Observateur {
         Collisionable bordures = new Bordure((int) vaisseau.getWidth(), (int) vaisseau.getHeight());
 
         entiteListe.add(vaisseau);
-        entiteListe.add(asteroide);
 
-        collisionables.add(asteroide);
         collisionables.add(bordures);
         collisionables.add(vaisseau);
     }
@@ -123,19 +114,13 @@ public class Jeu extends BasicGame implements Observateur {
             }
             // TODO: -Refactor cette partie de code pour prendre avantage des interfaces
             //       -On devrait pouvoir seulement appeler currentEntity.mouvementEntite sans utiliser instanceof
-            if (currentEntity instanceof Vaisseau && vaisseauMoving) {
-                currentEntity.mouvementEntite(directionVaisseau, delta);
-            } else if (currentEntity instanceof Asteroide) {
+            if (currentEntity instanceof Asteroide) {
                 Asteroide asteroide = (Asteroide) currentEntity;
                 if (asteroide.isSeparer()) {
                     separerAsteroide(asteroide);
-                } else {
-                    currentEntity.mouvementEntite(DOWN, delta);
                 }
-
-            } else if (currentEntity instanceof Laser) {
-                currentEntity.mouvementEntite(UP, delta);
             }
+            currentEntity.deplacer(delta);
         }
 
         entiteListe.removeAll(listeEntiteDetruites);
@@ -167,8 +152,8 @@ public class Jeu extends BasicGame implements Observateur {
                 currentEntity.getImage().draw(entityX, entityY);
             }
 
-            //Utile pour debug les collisions, mais à enlever plus tard
-            //g.drawLine(currentEntity.getX(), currentEntity.getY(), (currentEntity.getX() + currentEntity.getWidth()), (currentEntity.getY() + currentEntity.getHeight()));
+            // FIXME: Utile pour debug les collisions, mais à enlever plus tard
+//            g.drawLine(currentEntity.getX(), currentEntity.getY(), (currentEntity.getX() + currentEntity.getWidth()), (currentEntity.getY() + currentEntity.getHeight()));
         }
 
         switch (vaisseau.getLives()) {
@@ -252,20 +237,20 @@ public class Jeu extends BasicGame implements Observateur {
     public void keyPressed(int key, char c) {
         switch (c) {
             case 'w':
-                directionVaisseau = UP;
-                vaisseauMoving = true;
+                vaisseau.setDirection(UP);
+                vaisseau.setSeDeplace(true);
                 break;
             case 'a':
-                directionVaisseau = Direction.LEFT;
-                vaisseauMoving = true;
+                vaisseau.setDirection(LEFT);
+                vaisseau.setSeDeplace(true);
                 break;
             case 's':
-                directionVaisseau = Direction.DOWN;
-                vaisseauMoving = true;
+                vaisseau.setDirection(DOWN);
+                vaisseau.setSeDeplace(true);
                 break;
             case 'd':
-                directionVaisseau = Direction.RIGHT;
-                vaisseauMoving = true;
+                vaisseau.setDirection(RIGHT);
+                vaisseau.setSeDeplace(true);
                 break;
             case ' ':
                 float positionX = (vaisseau.getX() + vaisseau.getWidth() / 2) - 8;
@@ -293,7 +278,7 @@ public class Jeu extends BasicGame implements Observateur {
             case Input.KEY_A:
             case Input.KEY_S:
             case Input.KEY_D:
-                vaisseauMoving = false;
+                vaisseau.setSeDeplace(false);
                 break;
         }
     }

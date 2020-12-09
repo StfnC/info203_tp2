@@ -1,7 +1,7 @@
 package ca.qc.bdeb.info203.tp2.Entite;
 
 import ca.qc.bdeb.info203.tp2.Collisionable;
-import ca.qc.bdeb.info203.tp2.Mouvement;
+import ca.qc.bdeb.info203.tp2.Deplacable;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
@@ -9,12 +9,11 @@ import java.awt.*;
 
 //TODO: Ajouter interface PeutCollisionner
 
-public abstract class Entite implements Mouvement, Collisionable {
+public abstract class Entite implements Deplacable, Collisionable {
     public int index;
     protected float x, y, width, height;
     protected Image image;
     protected boolean detruire = false;
-
 
     /**
      * Constructeur d'Entite avec image sur le disque

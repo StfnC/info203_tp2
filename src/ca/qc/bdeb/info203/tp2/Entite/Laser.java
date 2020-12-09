@@ -35,7 +35,7 @@ public class Laser extends Entite {
     }
 
     @Override
-    public void mouvementEntite(Direction direction, int delta) {
+    public void deplacer(int delta) {
         if (y >= (initialY - Jeu.getHEIGHT() / 2)) {
             y -= Jeu.getScalingVitesse() * VITESSE_LASER * delta;
         } else {

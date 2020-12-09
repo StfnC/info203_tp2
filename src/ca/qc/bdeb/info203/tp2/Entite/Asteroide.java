@@ -19,6 +19,8 @@ public class Asteroide extends Entite {
     private final Image ast3;
     private final Image ast4;
 
+    private Direction direction;
+
     private boolean isSeparer;
 
     private Sound sonAsteroideBroye;
@@ -35,6 +37,8 @@ public class Asteroide extends Entite {
         setImageAsteroide();
 
         sonAsteroideBroye = new Sound("res/Sounds/sfx_shieldUp.wav");
+
+        this.direction = Direction.DOWN;
     }
 
     private void setImageAsteroide() {
@@ -63,8 +67,18 @@ public class Asteroide extends Entite {
     }
 
     @Override
-    public void mouvementEntite(Direction direction, int delta) {
-        y += Jeu.getScalingVitesse() * VITESSE_ASTEROIDE * delta;
+    public void deplacer(int delta) {
+        switch (direction) {
+            case DOWN:
+                y += Jeu.getScalingVitesse() * VITESSE_ASTEROIDE * delta;
+                break;
+            case RIGHT:
+                x += Jeu.getScalingVitesse() * VITESSE_ASTEROIDE * delta;
+                break;
+            case LEFT:
+                x -= Jeu.getScalingVitesse() * VITESSE_ASTEROIDE * delta;
+                break;
+        }
     }
 
     @Override
@@ -90,5 +104,13 @@ public class Asteroide extends Entite {
 
     public boolean isSeparer() {
         return isSeparer;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
     }
 }
