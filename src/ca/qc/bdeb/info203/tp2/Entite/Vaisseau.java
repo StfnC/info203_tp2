@@ -13,6 +13,8 @@ public class Vaisseau extends Entite implements Observable {
     private Cargo cargo = new Cargo();
     private int lives;
     private boolean vulnerable = true;
+    private boolean peutTirer = true;
+    private boolean peutSeDeplacer = true;
     private boolean seDeplace = false;
     private Direction direction;
     private ArrayList<Observateur> observateurs = new ArrayList<>();
@@ -25,7 +27,7 @@ public class Vaisseau extends Entite implements Observable {
 
     @Override
     public void deplacer(int delta) {
-        if (seDeplace) {
+        if (seDeplace && peutSeDeplacer) {
             switch (direction) {
                 case UP:
                     y -= Jeu.getScalingVitesse() * VITESSE_VAISSEAU * delta;
@@ -93,7 +95,7 @@ public class Vaisseau extends Entite implements Observable {
         }
     }
 
-    public boolean isSeDeplace() {
+    public boolean getSeDeplace() {
         return seDeplace;
     }
 
@@ -107,6 +109,22 @@ public class Vaisseau extends Entite implements Observable {
 
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+
+    public boolean getPeutSeDeplacer() {
+        return peutSeDeplacer;
+    }
+
+    public void setPeutSeDeplacer(boolean peutSeDeplacer) {
+        this.peutSeDeplacer = peutSeDeplacer;
+    }
+
+    public boolean getPeutTirer() {
+        return peutTirer;
+    }
+
+    public void setPeutTirer(boolean peutTirer) {
+        this.peutTirer = peutTirer;
     }
 
     public Cargo getCargo() {

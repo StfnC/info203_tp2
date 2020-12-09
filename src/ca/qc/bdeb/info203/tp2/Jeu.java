@@ -253,19 +253,21 @@ public class Jeu extends BasicGame implements Observateur {
     public void keyPressed(int key, char c) {
         switch (key) {
             case Input.KEY_SPACE:
-                float positionX = (vaisseau.getX() + vaisseau.getWidth() / 2) - 8;
-                float positionY = vaisseau.getY() - 32;
+                if (vaisseau.getPeutTirer()) {
+                    float positionX = (vaisseau.getX() + vaisseau.getWidth() / 2) - 8;
+                    float positionY = vaisseau.getY() - 32;
 
-                Laser laser = new Laser(positionX, positionY, 16, 32, "res/laser.png");
+                    Laser laser = new Laser(positionX, positionY, 16, 32, "res/laser.png");
 
-                entiteListe.add(laser);
-                collisionables.add(laser);
+                    entiteListe.add(laser);
+                    collisionables.add(laser);
+                }
                 break;
             case Input.KEY_E:
                 vaisseau.getCargo().transferCargaison();
                 break;
             case Input.KEY_ESCAPE:
-                doGameOver();
+                gc.exit();
                 break;
         }
     }
@@ -341,6 +343,8 @@ public class Jeu extends BasicGame implements Observateur {
         if (!gameOver) {
             gameOverSound.play();
             gameOver = true;
+            vaisseau.setPeutSeDeplacer(false);
+            vaisseau.setPeutTirer(false);
         }
 
         try {
