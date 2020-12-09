@@ -35,22 +35,22 @@ public class MoteurCollision {
         }
     }
 
-    public void detecterCollisionMur(Collisionable objetEnCollision, Collisionable murs) {
+    public void detecterCollisionMur(Collisionable objetEnCollision, Collisionable mur) {
         // FIXME: Très hacky et hardcoded pour le moment, juste pour test, à modifier
         boolean topOut = objetEnCollision.getRectangle().getY() < 0;
-        boolean bottomOut = objetEnCollision.getRectangle().getY() + objetEnCollision.getRectangle().getHeight() > Jeu.getHEIGHT();
+        boolean bottomOut = objetEnCollision.getRectangle().getY() + objetEnCollision.getRectangle().getHeight() > Main.HEIGHT;
         boolean leftOut = objetEnCollision.getRectangle().getX() < 0;
-        boolean rightOut = objetEnCollision.getRectangle().getX() + objetEnCollision.getRectangle().getWidth() > Jeu.getWIDTH();
+        boolean rightOut = objetEnCollision.getRectangle().getX() + objetEnCollision.getRectangle().getWidth() > Main.WIDTH;
 
         // FIXME: Y a une facon plus clean de faire
         if (topOut) {
-            murs.gererCollision(objetEnCollision, Direction.UP);
+            mur.gererCollision(objetEnCollision, Direction.UP);
         } else if (bottomOut) {
-            murs.gererCollision(objetEnCollision, Direction.DOWN);
+            mur.gererCollision(objetEnCollision, Direction.DOWN);
         } else if (leftOut) {
-            murs.gererCollision(objetEnCollision, Direction.LEFT);
+            mur.gererCollision(objetEnCollision, Direction.LEFT);
         } else if (rightOut) {
-            murs.gererCollision(objetEnCollision, Direction.RIGHT);
+            mur.gererCollision(objetEnCollision, Direction.RIGHT);
         }
     }
 }
