@@ -7,6 +7,7 @@ import ca.qc.bdeb.info203.tp2.Entite.Vaisseau;
 import ca.qc.bdeb.info203.tp2.Enum.Direction;
 import ca.qc.bdeb.info203.tp2.Enum.TailleAsteroide;
 import org.newdawn.slick.*;
+import org.omg.PortableInterceptor.INACTIVE;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -25,7 +26,6 @@ public class Jeu extends BasicGame implements Observateur {
     private static final TailleAsteroide[] TAILLES_ASTEROIDES_GENERES = {TailleAsteroide.TRES_GRAND, TailleAsteroide.GRAND};
     private static final Direction[] DIRECTIONS_POSSIBLES_ASTEROIDES = {Direction.DOWN, Direction.RIGHT, Direction.LEFT};
 
-    private ArrayList<Integer> listeKeys = new ArrayList<>();
     private ArrayList<Entite> entiteListe = new ArrayList<>();
     private ArrayList<Collisionable> collisionables = new ArrayList<>();
     private ArrayList<Entite> listeEntiteDetruites = new ArrayList<>();
@@ -37,7 +37,6 @@ public class Jeu extends BasicGame implements Observateur {
     private Vaisseau vaisseau;
 
     private GameContainer gc;
-    private Input input;
     private Sound gameOverSound;
     private boolean gameOverSoundPlayed;
 
@@ -79,7 +78,6 @@ public class Jeu extends BasicGame implements Observateur {
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
         this.gc = gameContainer;
-        this.input = gc.getInput();
         this.moteurCollision = new MoteurCollision();
 
         // On nettoie les listes, utile dans le cas où le joueur a recommencé une partie
@@ -87,7 +85,6 @@ public class Jeu extends BasicGame implements Observateur {
         this.collisionables.clear();
         this.listeEntiteCrees.clear();
         this.listeEntiteDetruites.clear();
-        this.listeKeys.clear();
 
 
         //TODO: Background music
@@ -111,8 +108,6 @@ public class Jeu extends BasicGame implements Observateur {
 
     @Override
     public void update(GameContainer gameContainer, int delta) throws SlickException {
-        getKeys();
-        traiterKeys();
         // TODO: Verifier que les noms des constantes respectent les conventions
 
         // TODO: S'assurer de detruire les asteroides hors de l'ecran
@@ -197,14 +192,6 @@ public class Jeu extends BasicGame implements Observateur {
 
         g.drawString("Minerai dans le vaisseau: " + String.valueOf(vaisseau.getCargo().getCargaisonVaisseau()) + " / " + vaisseau.getCargo().getCargaisonVaisseauMax(), 10, 84);
         g.drawString("Minerai envoyé sur Mars: " + String.valueOf(vaisseau.getCargo().getCargaisonMars()), 10, 104);
-    }
-
-    private void getKeys() {
-
-    }
-
-    private void traiterKeys() {
-
     }
 
     @Override
