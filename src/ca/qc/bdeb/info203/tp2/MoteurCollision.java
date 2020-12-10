@@ -4,7 +4,15 @@ import ca.qc.bdeb.info203.tp2.Entite.Vaisseau;
 
 import java.util.ArrayList;
 
+/**
+ * Classe qui agit comme moteur de collisions
+ */
 public class MoteurCollision {
+    /**
+     * Détecte les collisions entre les objets de type Collisionable d'une liste
+     *
+     * @param collisionables Liste d'objets de type Collisionable qui peuvent entrer en collision
+     */
     public void detecterCollisions(ArrayList<Collisionable> collisionables) {
         for (Collisionable c1 : collisionables) {
             for (Collisionable c2 : collisionables) {

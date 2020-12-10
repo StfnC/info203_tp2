@@ -7,6 +7,9 @@ import org.newdawn.slick.SlickException;
 
 import java.awt.*;
 
+/**
+ * Classe mère qui va gérer les entités
+ */
 public abstract class Entite implements Deplacable, Collisionable {
     protected float x, y, width, height;
     protected Image image;
@@ -34,46 +37,82 @@ public abstract class Entite implements Deplacable, Collisionable {
         }
     }
 
+    /**
+     * Constructeur qui n'inclut que la position de l'entité
+     *
+     * @param x Position x sur l'écran
+     * @param y Position y sur l'écran
+     */
     public Entite(float x, float y) {
         this.x = x;
         this.y = y;
     }
 
-    // Permet de déplacer l'entité
+
+    /**
+     * Méthode setter pour la position de l'entité
+     *
+     * @param x Position x sur l'écran
+     * @param y Position y sur l'écran
+     */
     public void setLocation(float x, float y) {
         this.x = x;
         this.y = y;
     }
 
-    // Retourne le rectange qui englobe l'entité
+
+    /**
+     * Getter pour le rectangle autour de l'entité
+     */
     public Rectangle getRectangle() {
         return new Rectangle((int) x, (int) y, (int) width, (int) height);
     }
 
+    /**
+     * Getter pour la position x
+     */
     public float getX() {
         return x;
     }
 
+    /**
+     * Getter pour la position y
+     */
     public float getY() {
         return y;
     }
 
+    /**
+     * Getter pour la largeur
+     */
     public float getWidth() {
         return width;
     }
 
+    /**
+     * Getter pour la hauteur
+     */
     public float getHeight() {
         return height;
     }
 
+    /**
+     * Getter pour l'image
+     */
     public Image getImage() {
         return image;
     }
 
+    /**
+     * Getter pour le boolean détruire
+     */
     public boolean isDetruire() {
         return detruire;
     }
 
+    /**
+     * Setter pour le boolean détruire
+     */
     public void setDetruire(boolean detruire) {
         this.detruire = detruire;
     }

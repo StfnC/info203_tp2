@@ -9,6 +9,9 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
 
+/**
+ * Classe qui gère les entités de type asteroide
+ */
 public class Asteroide extends Entite {
     private static final float VITESSE_ASTEROIDE = 0.5f;
 
@@ -19,12 +22,21 @@ public class Asteroide extends Entite {
     private final Image AST_PETIT;
     private final Image AST_TRES_PETIT;
 
-    private TailleAsteroide tailleAsteroide;
+    private final TailleAsteroide tailleAsteroide;
     private Direction direction;
     private boolean isSeparer;
 
-    private Sound sonAsteroideBroye;
+    private final Sound sonAsteroideBroye;
 
+    /**
+     * Constructeur de chaque asteroide créé
+     *
+     * @param x               Position x sur l'écran
+     * @param y               Position y sur l'écran
+     * @param tailleAsteroide La taille de l'asteroide
+     * @param direction       La direction de son mouvement
+     * @throws SlickException
+     */
     public Asteroide(float x, float y, TailleAsteroide tailleAsteroide, Direction direction) throws SlickException {
         super(x, y);
 
@@ -43,6 +55,9 @@ public class Asteroide extends Entite {
         this.direction = direction;
     }
 
+    /**
+     * Après avoir choisi la taille de l'astéroïde on associe la bonne image à l'astéroïde.
+     */
     private void setImageAsteroide() {
         switch (tailleAsteroide) {
             case TRES_GRAND:
@@ -69,6 +84,9 @@ public class Asteroide extends Entite {
         this.height = image.getHeight();
     }
 
+    /**
+     * Méthode qui va effectuer le déplacement des asteroides tout dépendant de la direction.
+     */
     @Override
     public void deplacer(int delta) {
         switch (direction) {
@@ -84,6 +102,11 @@ public class Asteroide extends Entite {
         }
     }
 
+    /**
+     * On gère la collision différemment selon le type d'entité avec lequel on collisionne.
+     *
+     * @param objetEnCollision L'objet avec lequel il y a collision
+     */
     @Override
     public void gererCollision(Collisionable objetEnCollision) {
         if (objetEnCollision instanceof Vaisseau) {
@@ -99,18 +122,32 @@ public class Asteroide extends Entite {
         }
     }
 
+    /**
+     * Méthode pour verifier si l'astéroïde doit se séparer
+     */
     public boolean isSeparer() {
         return isSeparer;
     }
 
+    /**
+     * Méthode getter pour la direction de l'astéroïde
+     */
     public Direction getDirection() {
         return direction;
     }
 
+    /**
+     * Méthode setter pour la direction de l'astéroïde
+     *
+     * @param direction Nouvelle direction
+     */
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
 
+    /**
+     * Méthode getter pour la taille de l'astéroïde
+     */
     public TailleAsteroide getTailleAsteroide() {
         return tailleAsteroide;
     }
