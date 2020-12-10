@@ -11,6 +11,9 @@ import org.newdawn.slick.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Classe qui contient la logique du jeu
+ */
 public class Jeu extends BasicGame implements Observateur {
     private static final int DELAI_INVULNERABILITE = 3000;
     private static final int DELAI_SPAWN_ASTEROIDES = 1500;
@@ -45,22 +48,30 @@ public class Jeu extends BasicGame implements Observateur {
     private long momentSpawnAsteroide;
     private long scalingValueBackground = 0;
 
+    /**
+     * Construit un Jeu avec un nom en paramêtre
+     *
+     * @param title Nom du jeu
+     */
     public Jeu(String title) {
         super(title);
     }
 
+    /**
+     * Initialise le conteneur du jeu, l'input, le moteur de collision
+     * Initialise les sons, la musique et les images
+     * Nettoie les différentes listes
+     * Initialise le vaisseau
+     * Initialise la bordure
+     *
+     * @param gameContainer Conteneur du jeu
+     * @throws SlickException Exception Slick qui peut être levée lors de l'initialisation
+     */
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
         this.gc = gameContainer;
         this.input = gc.getInput();
         this.moteurCollision = new MoteurCollision();
-
-        // On nettoie les listes, utile dans le cas où le joueur a recommencé une partie
-        this.listeTouchesMouvement.clear();
-        this.listeEntites.clear();
-        this.listeCollisionables.clear();
-        this.listeEntiteCrees.clear();
-        this.listeEntiteDetruites.clear();
 
         bgMusic = new Sound("res/Sounds/sfx_bgMusic.wav");
         bgMusic.loop();
@@ -70,6 +81,13 @@ public class Jeu extends BasicGame implements Observateur {
 
         backgroundTile = new Image("res/bgTile.png");
         heart = new Image("res/health.png");
+
+        // On nettoie les listes, utile dans le cas où le joueur a recommencé une partie
+        this.listeTouchesMouvement.clear();
+        this.listeEntites.clear();
+        this.listeCollisionables.clear();
+        this.listeEntiteCrees.clear();
+        this.listeEntiteDetruites.clear();
 
         vaisseau = new Vaisseau(0, 0, 128, 128, "res/ship.png");
         vaisseau.setLocation((Main.WIDTH / 2 - vaisseau.getWidth() / 2), (float) (Main.HEIGHT * 0.7));
@@ -83,19 +101,32 @@ public class Jeu extends BasicGame implements Observateur {
         listeCollisionables.add(vaisseau);
     }
 
+    /**
+     * Boucle du jeu
+     * Capture et traite les touches de mouvement
+     * Fait apparaître un astéroide à un intervalle régulier
+     * Sépare les astéroides
+     * Déplace les entités
+     * Détruit les entités à détruire
+     *
+     * @param gameContainer Conteneur du jeu
+     * @param delta         Intervalle de temps entre la frame précédente et celle actuelle
+     * @throws SlickException Exception Slick qui peut être levée lors de la boucle de jeu
+     */
     @Override
     public void update(GameContainer gameContainer, int delta) throws SlickException {
         // FIXME: -Bug qui fait que parfois le temps d'invulnérabilité est pas respecté
         //        -Arrive dans les parties lorsqu'on fait rejouer
+        long tempsActuel = System.currentTimeMillis();
 
         getTouchesMouvement();
         traiterTouchesMouvement();
 
         nettoyerAsteroidesHorsEcran();
 
-        if (System.currentTimeMillis() - momentSpawnAsteroide > DELAI_SPAWN_ASTEROIDES) {
+        if (tempsActuel - momentSpawnAsteroide > DELAI_SPAWN_ASTEROIDES) {
             genererAsteroideRandom();
-            momentSpawnAsteroide = System.currentTimeMillis();
+            momentSpawnAsteroide = tempsActuel;
         }
 
         for (Entite currentEntity : listeEntites) {
@@ -136,7 +167,7 @@ public class Jeu extends BasicGame implements Observateur {
     @Override
     public void render(GameContainer gameContainer, Graphics g) {
 
-        doBackground(gameContainer, g);
+        doBackground(g);
 
         for (Entite currentEntity : listeEntites) {
             float entityX = currentEntity.getX();
@@ -148,9 +179,6 @@ public class Jeu extends BasicGame implements Observateur {
             } else {
                 currentEntity.getImage().draw(entityX, entityY);
             }
-
-            // FIXME: Utile pour debug les collisions, mais à enlever plus tard
-//            g.drawLine(currentEntity.getX(), currentEntity.getY(), (currentEntity.getX() + currentEntity.getWidth()), (currentEntity.getY() + currentEntity.getHeight()));
         }
 
         if (vaisseau.getLives() > 0) {
@@ -172,7 +200,7 @@ public class Jeu extends BasicGame implements Observateur {
     private void nettoyerAsteroidesHorsEcran() {
         for (Entite entite : listeEntites) {
             if (entite instanceof Asteroide) {
-                // Si un asteroide est plus que fois sa largeur et/ou hauteur hors de la fenêtre, on le sort
+                // Si un asteroide est plus que 2 fois sa largeur et/ou hauteur hors de la fenêtre, on le marque pour être détruit
                 boolean horsX = entite.getX() > Main.WIDTH + 2 * entite.getWidth() || entite.getX() < -2 * entite.getWidth();
                 boolean horsY = entite.getY() > Main.HEIGHT + 2 * entite.getHeight() || entite.getY() < -2 * entite.getHeight();
                 if (horsX || horsY) {
@@ -191,6 +219,9 @@ public class Jeu extends BasicGame implements Observateur {
         }
     }
 
+    /**
+     * Détecte si les touches de mouvement sont appuyées
+     */
     public void getTouchesMouvement() {
         // W
         if (input.isKeyDown(Input.KEY_W)) {
@@ -226,6 +257,9 @@ public class Jeu extends BasicGame implements Observateur {
         }
     }
 
+    /**
+     * Change la direction du vaisseau dépendament des touches appuyées
+     */
     public void traiterTouchesMouvement() {
         // W
         if (listeTouchesMouvement.contains(Input.KEY_W)) {
@@ -249,10 +283,18 @@ public class Jeu extends BasicGame implements Observateur {
         }
     }
 
+    /**
+     * Détecte les touches appuyées et agit en conséquence
+     * N'est pas en charge des touches pour bouger, car cause des bugs lorsqu'on appuie rapidement sur plusieurs touches
+     *
+     * @param key Numéro de la touche appuyée
+     * @param c   Charactère de la touche appuyée
+     */
     @Override
     public void keyPressed(int key, char c) {
         switch (key) {
             case Input.KEY_SPACE:
+                // Tirer un laser
                 if (vaisseau.getPeutTirer()) {
                     float positionX = (vaisseau.getX() + vaisseau.getWidth() / 2) - 8;
                     float positionY = vaisseau.getY() - 32;
@@ -264,12 +306,15 @@ public class Jeu extends BasicGame implements Observateur {
                 }
                 break;
             case Input.KEY_E:
+                // Envoyer la cargaison sur Mars
                 vaisseau.getCargo().transferCargaison();
                 break;
             case Input.KEY_ESCAPE:
+                // Quitter le jeu
                 gc.exit();
                 break;
             case Input.KEY_O:
+                // Recommencer la partie
                 if (gameOver) {
                     try {
                         this.init(gc);
@@ -281,6 +326,12 @@ public class Jeu extends BasicGame implements Observateur {
         }
     }
 
+    /**
+     * S'assure que le vaisseau ne bouge plus lorsque les touches de mouvement sont relâchées
+     *
+     * @param key Numéro de la touche appuyée
+     * @param c   Charactère de la touche appuyée
+     */
     @Override
     public void keyReleased(int key, char c) {
         switch (key) {
@@ -293,23 +344,36 @@ public class Jeu extends BasicGame implements Observateur {
         }
     }
 
+    /**
+     * Génère un Asteroide de taille, position et direction aléatoire
+     *
+     * @throws SlickException Exception Slick qui peut être levée lors de la construction d'un Asteroide
+     */
     public void genererAsteroideRandom() throws SlickException {
         Random r = new Random();
+        // Choisi une taille au hasard
         TailleAsteroide tailleAsteroide = TAILLES_ASTEROIDES_GENERES[r.nextInt(TAILLES_ASTEROIDES_GENERES.length)];
         // Choisi une direction au hasard
         Direction direction = DIRECTIONS_POSSIBLES_ASTEROIDES[r.nextInt(DIRECTIONS_POSSIBLES_ASTEROIDES.length)];
         Asteroide asteroide = new Asteroide(0, 0, tailleAsteroide, direction);
+        // Donne une position au hasard
         trouverPositionDepartAsteroide(asteroide);
         listeEntites.add(asteroide);
         listeCollisionables.add(asteroide);
     }
 
+    /**
+     * Donne une position aléatoire à un Asteroide
+     *
+     * @param asteroide Asteroide à qui il faut donner une position aléatoire
+     */
     private void trouverPositionDepartAsteroide(Asteroide asteroide) {
         Random r = new Random();
 
         float posX = 0;
         float posY = 0;
 
+        // Pour la gauche et la droite, on s'assure de faire apparaître l'astéroide à un y où le vaisseau peut le détruire
         switch (asteroide.getDirection()) {
             case UP:
                 break;
@@ -368,10 +432,9 @@ public class Jeu extends BasicGame implements Observateur {
     /**
      * Méthode qui utilise les modulos pour s'assurer que l'écran est toujours rempli avec bgTile
      *
-     * @param gc Envoyé à partir de render pour s'assurer que l'on peut afficher sur l'écran en dehors de la méthode render()
      * @param g Permet de dessiner sur l'écran
      */
-    public void doBackground(GameContainer gc, Graphics g) {
+    public void doBackground(Graphics g) {
         for (int i = 0; i < Main.WIDTH; i = i + 256) {
             for (long j = scalingValueBackground % 256 - 256; j < Main.HEIGHT; j = j + 256) {
                 g.drawImage(backgroundTile, i, j);
@@ -380,14 +443,25 @@ public class Jeu extends BasicGame implements Observateur {
     }
 
 
+    /**
+     * Gère l'invulnérabilité du vaisseau
+     *
+     * @param millis Temps en millisecondes lorsque l'update est survenue
+     */
     @Override
     public void update(long millis) {
+        // On regarde si le temps entre la dernière collision et celle actuelle est supérieur au délai d'invulnérabilité
         if (millis - this.momentCollision > DELAI_INVULNERABILITE) {
             vaisseau.setVulnerable(true);
             this.momentCollision = millis;
         }
     }
 
+    /**
+     * Getter du facteur par lequelle la vitesse est multipliée
+     *
+     * @return Facteur par lequelle la vitesse est multipliée
+     */
     public static float getScalingVitesse() {
         return SCALING_VITESSE;
     }
