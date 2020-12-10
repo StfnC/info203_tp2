@@ -75,4 +75,8 @@ public abstract class Entite implements Deplacable, Collisionable {
     public boolean isDetruire() {
         return detruire;
     }
+
+    public void setDetruire(boolean detruire) {
+        this.detruire = detruire;
+    }
 }
