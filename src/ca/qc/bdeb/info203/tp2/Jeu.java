@@ -22,8 +22,8 @@ public class Jeu extends BasicGame implements Observateur {
     private static final Direction[] DIRECTIONS_POSSIBLES_ASTEROIDES = {Direction.DOWN, Direction.RIGHT, Direction.LEFT};
 
     private ArrayList<Integer> listeTouchesMouvement = new ArrayList<>();
-    private ArrayList<Entite> entiteListe = new ArrayList<>();
-    private ArrayList<Collisionable> collisionables = new ArrayList<>();
+    private ArrayList<Entite> listeEntites = new ArrayList<>();
+    private ArrayList<Collisionable> listeCollisionables = new ArrayList<>();
     private ArrayList<Entite> listeEntiteDetruites = new ArrayList<>();
     private ArrayList<Entite> listeEntiteCrees = new ArrayList<>();
 
@@ -34,6 +34,8 @@ public class Jeu extends BasicGame implements Observateur {
 
     private GameContainer gc;
     private Input input;
+
+    private Sound bgMusic;
     private Sound gameOverSound;
     private boolean gameOver;
 
@@ -41,14 +43,10 @@ public class Jeu extends BasicGame implements Observateur {
 
     private long momentCollision;
     private long momentSpawnAsteroide;
-    private long scalingValue = 0;
+    private long scalingValueBackground = 0;
 
     public Jeu(String title) {
         super(title);
-    }
-
-    public static float getScalingVitesse() {
-        return SCALING_VITESSE;
     }
 
     @Override
@@ -59,13 +57,14 @@ public class Jeu extends BasicGame implements Observateur {
 
         // On nettoie les listes, utile dans le cas où le joueur a recommencé une partie
         this.listeTouchesMouvement.clear();
-        this.entiteListe.clear();
-        this.collisionables.clear();
+        this.listeEntites.clear();
+        this.listeCollisionables.clear();
         this.listeEntiteCrees.clear();
         this.listeEntiteDetruites.clear();
 
+        bgMusic = new Sound("res/Sounds/sfx_bgMusic.wav");
+        bgMusic.loop();
 
-        //TODO: Background music
         gameOverSound = new Sound("res/Sounds/sfx_lose.wav");
         gameOver = false;
 
@@ -78,28 +77,28 @@ public class Jeu extends BasicGame implements Observateur {
 
         Collisionable bordures = new Bordure((int) vaisseau.getWidth(), (int) vaisseau.getHeight());
 
-        entiteListe.add(vaisseau);
+        listeEntites.add(vaisseau);
 
-        collisionables.add(bordures);
-        collisionables.add(vaisseau);
+        listeCollisionables.add(bordures);
+        listeCollisionables.add(vaisseau);
     }
 
     @Override
     public void update(GameContainer gameContainer, int delta) throws SlickException {
-        // TODO: Verifier que les noms des constantes respectent les conventions
+        // FIXME: -Bug qui fait que parfois le temps d'invulnérabilité est pas respecté
+        //        -Arrive dans les parties lorsqu'on fait rejouer
 
-        // TODO: S'assurer de detruire les asteroides hors de l'ecran
-
-        // TODO: Garbage collector a certains intervalles
         getTouchesMouvement();
         traiterTouchesMouvement();
+
+        nettoyerAsteroidesHorsEcran();
 
         if (System.currentTimeMillis() - momentSpawnAsteroide > DELAI_SPAWN_ASTEROIDES) {
             genererAsteroideRandom();
             momentSpawnAsteroide = System.currentTimeMillis();
         }
 
-        for (Entite currentEntity : entiteListe) {
+        for (Entite currentEntity : listeEntites) {
             boolean destruction = currentEntity.isDetruire();
 
             if (destruction) {
@@ -114,17 +113,17 @@ public class Jeu extends BasicGame implements Observateur {
             currentEntity.deplacer(delta);
         }
 
-        entiteListe.removeAll(listeEntiteDetruites);
-        collisionables.removeAll(listeEntiteDetruites);
+        listeEntites.removeAll(listeEntiteDetruites);
+        listeCollisionables.removeAll(listeEntiteDetruites);
         listeEntiteDetruites.clear();
 
-        entiteListe.addAll(listeEntiteCrees);
-        collisionables.addAll(listeEntiteCrees);
+        listeEntites.addAll(listeEntiteCrees);
+        listeCollisionables.addAll(listeEntiteCrees);
         listeEntiteCrees.clear();
 
-        moteurCollision.detecterCollisions(collisionables);
+        moteurCollision.detecterCollisions(listeCollisionables);
 
-        scalingValue += SCALING_VITESSE * 2 * delta;
+        scalingValueBackground += SCALING_VITESSE * 2 * delta;
     }
 
     @Override
@@ -132,7 +131,7 @@ public class Jeu extends BasicGame implements Observateur {
 
         doBackground(gameContainer, g);
 
-        for (Entite currentEntity : entiteListe) {
+        for (Entite currentEntity : listeEntites) {
             float entityX = currentEntity.getX();
             float entityY = currentEntity.getY();
 
@@ -150,13 +149,27 @@ public class Jeu extends BasicGame implements Observateur {
         if (vaisseau.getLives() > 0) {
             dessinerCoeurs();
         } else {
-            // Le - 300 est pour centrer le texte
-            g.drawString("Voulez-vous rejouer (O pour rejouer, ESC pour quitter)", Main.WIDTH / 2 - 300, Main.HEIGHT / 2);
+            String messageGameOver = "Voulez-vous rejouer (O pour rejouer, ESC pour quitter)";
+            // Le -[...].getWidth(message) est pour centrer le texte
+            g.drawString(messageGameOver, (Main.WIDTH - g.getFont().getWidth(messageGameOver)) / 2, Main.HEIGHT / 2);
             doGameOver();
         }
 
-        g.drawString("Minerai dans le vaisseau: " + String.valueOf(vaisseau.getCargo().getCargaisonVaisseau()) + " / " + vaisseau.getCargo().getCargaisonVaisseauMax(), 10, 84);
-        g.drawString("Minerai envoyé sur Mars: " + String.valueOf(vaisseau.getCargo().getCargaisonMars()), 10, 104);
+        g.drawString("Minerai dans le vaisseau: " + vaisseau.getCargo().getCargaisonVaisseau() + " / " + vaisseau.getCargo().getCargaisonVaisseauMax(), 10, 84);
+        g.drawString("Minerai envoyé sur Mars: " + vaisseau.getCargo().getCargaisonMars(), 10, 104);
+    }
+
+    private void nettoyerAsteroidesHorsEcran() {
+        for (Entite entite : listeEntites) {
+            if (entite instanceof Asteroide) {
+                // Si un asteroide est plus que fois sa largeur et/ou hauteur hors de la fenêtre, on le sort
+                boolean horsX = entite.getX() > Main.WIDTH + 2 * entite.getWidth() || entite.getX() < -2 * entite.getWidth();
+                boolean horsY = entite.getY() > Main.HEIGHT + 2 * entite.getHeight() || entite.getY() < -2 * entite.getHeight();
+                if (horsX || horsY) {
+                    entite.setDetruire(true);
+                }
+            }
+        }
     }
 
     public void dessinerCoeurs() {
@@ -233,8 +246,8 @@ public class Jeu extends BasicGame implements Observateur {
 
                     Laser laser = new Laser(positionX, positionY, 16, 32, "res/laser.png");
 
-                    entiteListe.add(laser);
-                    collisionables.add(laser);
+                    listeEntites.add(laser);
+                    listeCollisionables.add(laser);
                 }
                 break;
             case Input.KEY_E:
@@ -274,8 +287,8 @@ public class Jeu extends BasicGame implements Observateur {
         Direction direction = DIRECTIONS_POSSIBLES_ASTEROIDES[r.nextInt(DIRECTIONS_POSSIBLES_ASTEROIDES.length)];
         Asteroide asteroide = new Asteroide(0, 0, tailleAsteroide, direction);
         trouverPositionDepartAsteroide(asteroide);
-        entiteListe.add(asteroide);
-        collisionables.add(asteroide);
+        listeEntites.add(asteroide);
+        listeCollisionables.add(asteroide);
     }
 
     private void trouverPositionDepartAsteroide(Asteroide asteroide) {
@@ -329,20 +342,11 @@ public class Jeu extends BasicGame implements Observateur {
             vaisseau.setPeutSeDeplacer(false);
             vaisseau.setPeutTirer(false);
         }
-
-//        try {
-//            Thread.sleep(1000);
-////            this.init(gc);
-//            gc.exit();
-//        } catch (InterruptedException ignored) {
-////        } catch (SlickException e) {
-////            e.printStackTrace();
-//        }
     }
 
     public void doBackground(GameContainer gc, Graphics g) {
         for (int i = 0; i < Main.WIDTH; i = i + 256) {
-            for (long j = scalingValue % 256 - 256; j < Main.HEIGHT; j = j + 256) {
+            for (long j = scalingValueBackground % 256 - 256; j < Main.HEIGHT; j = j + 256) {
                 g.drawImage(backgroundTile, i, j);
             }
         }
@@ -355,5 +359,9 @@ public class Jeu extends BasicGame implements Observateur {
             vaisseau.setVulnerable(true);
             this.momentCollision = millis;
         }
+    }
+
+    public static float getScalingVitesse() {
+        return SCALING_VITESSE;
     }
 }

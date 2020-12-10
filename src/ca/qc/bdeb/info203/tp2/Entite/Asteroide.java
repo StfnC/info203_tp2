@@ -1,6 +1,5 @@
 package ca.qc.bdeb.info203.tp2.Entite;
 
-import ca.qc.bdeb.info203.tp2.Cargo;
 import ca.qc.bdeb.info203.tp2.Collisionable;
 import ca.qc.bdeb.info203.tp2.Enum.Direction;
 import ca.qc.bdeb.info203.tp2.Enum.TailleAsteroide;
@@ -11,7 +10,7 @@ import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
 
 public class Asteroide extends Entite {
-    private static final double VITESSE_ASTEROIDE = 0.5;
+    private static final float VITESSE_ASTEROIDE = 0.5f;
 
     private final SpriteSheet SPRITE_ASTEROIDES = new SpriteSheet("res/SpriteAsteroide.png", 16, 16);
     private final Image AST_TRES_GRAND;
@@ -98,11 +97,6 @@ public class Asteroide extends Entite {
 
             this.isSeparer = true;
         }
-    }
-
-    @Override
-    public void gererCollision(Collisionable objetEnCollision, Direction directionCollision) {
-
     }
 
     public boolean isSeparer() {

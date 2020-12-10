@@ -67,11 +67,6 @@ public class Vaisseau extends Entite implements Observable {
         }
     }
 
-    @Override
-    public void gererCollision(Collisionable objetEnCollision, Direction directionCollision) {
-
-    }
-
     public int getLives() {
         return this.lives;
     }
