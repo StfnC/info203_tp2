@@ -85,9 +85,6 @@ public class Jeu extends BasicGame implements Observateur {
 
     @Override
     public void update(GameContainer gameContainer, int delta) throws SlickException {
-        // TODO: Verifier que les noms des constantes respectent les conventions
-
-        // TODO: Garbage collector a certains intervalles
         getTouchesMouvement();
         traiterTouchesMouvement();
 

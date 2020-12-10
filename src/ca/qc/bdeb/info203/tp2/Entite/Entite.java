@@ -7,8 +7,6 @@ import org.newdawn.slick.SlickException;
 
 import java.awt.*;
 
-//TODO: Ajouter interface PeutCollisionner
-
 public abstract class Entite implements Deplacable, Collisionable {
     protected float x, y, width, height;
     protected Image image;

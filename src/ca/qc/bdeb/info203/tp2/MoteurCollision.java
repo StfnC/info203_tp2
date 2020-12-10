@@ -6,8 +6,6 @@ import ca.qc.bdeb.info203.tp2.Enum.Direction;
 import java.util.ArrayList;
 
 public class MoteurCollision {
-    // TODO: À utiliser plus tard
-
     public void detecterCollisions(ArrayList<Collisionable> collisionables) {
         for (Collisionable c1 : collisionables) {
             for (Collisionable c2 : collisionables) {

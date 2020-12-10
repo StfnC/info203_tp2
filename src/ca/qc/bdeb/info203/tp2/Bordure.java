@@ -8,12 +8,12 @@ import java.awt.*;
 import static ca.qc.bdeb.info203.tp2.Enum.Direction.*;
 
 public class Bordure implements Collisionable, Mur {
-    private final Rectangle rectangle;
+    private final Rectangle RECTANGLE;
 
     public Bordure(int largeurVaisseau, int hauteurVaisseau) {
         // TODO: Rendre la ligne beaucoup plus lisible, si besoin
         // Crée un rectangle qui a l'espace d'un vaisseau entre lui et les bords de la fenêtre
-        rectangle = new Rectangle(largeurVaisseau, hauteurVaisseau, Main.WIDTH - 2 * largeurVaisseau, Main.HEIGHT - 2 * hauteurVaisseau);
+        RECTANGLE = new Rectangle(largeurVaisseau, hauteurVaisseau, Main.WIDTH - 2 * largeurVaisseau, Main.HEIGHT - 2 * hauteurVaisseau);
     }
 
     @Override
@@ -44,6 +44,6 @@ public class Bordure implements Collisionable, Mur {
 
     @Override
     public Rectangle getRectangle() {
-        return rectangle;
+        return RECTANGLE;
     }
 }
