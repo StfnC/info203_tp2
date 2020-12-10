@@ -149,8 +149,9 @@ public class Jeu extends BasicGame implements Observateur {
         if (vaisseau.getLives() > 0) {
             dessinerCoeurs();
         } else {
-            // Le - 300 est pour centrer le texte
-            g.drawString("Voulez-vous rejouer (O pour rejouer, ESC pour quitter)", Main.WIDTH / 2 - 300, Main.HEIGHT / 2);
+            String messageGameOver = "Voulez-vous rejouer (O pour rejouer, ESC pour quitter)";
+            // Le -[...].getWidth(message) est pour centrer le texte
+            g.drawString(messageGameOver, (Main.WIDTH - g.getFont().getWidth(messageGameOver)) / 2, Main.HEIGHT / 2);
             doGameOver();
         }
 
