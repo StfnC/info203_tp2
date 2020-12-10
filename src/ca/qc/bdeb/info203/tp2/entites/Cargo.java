@@ -1,8 +1,5 @@
 package ca.qc.bdeb.info203.tp2.entites;
 
-import ca.qc.bdeb.info203.tp2.entites.Asteroide;
-import ca.qc.bdeb.info203.tp2.entites.Vaisseau;
-
 /**
  * Classe qui va gérer le score et la cargaison des minerais
  */

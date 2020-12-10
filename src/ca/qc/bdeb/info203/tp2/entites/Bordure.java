@@ -1,7 +1,6 @@
 package ca.qc.bdeb.info203.tp2.entites;
 
 import ca.qc.bdeb.info203.tp2.Main;
-import ca.qc.bdeb.info203.tp2.entites.Vaisseau;
 import ca.qc.bdeb.info203.tp2.interfaces.Collisionable;
 import ca.qc.bdeb.info203.tp2.interfaces.Mur;
 
