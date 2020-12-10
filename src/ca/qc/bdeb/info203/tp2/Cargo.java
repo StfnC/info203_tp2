@@ -14,7 +14,7 @@ public class Cargo {
     /**
      * Constructeur de la cargaison
      *
-     * @param vaisseau Vaisseau qui a la cargo
+     * @param vaisseau Vaisseau qui a le Cargo
      */
     public Cargo(Vaisseau vaisseau) {
         CARGAISON_VAISSEAU_MAX = (int) Math.pow(vaisseau.getHeight(), 2);

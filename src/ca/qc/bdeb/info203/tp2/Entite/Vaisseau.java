@@ -25,10 +25,10 @@ public class Vaisseau extends Entite implements Observable {
     /**
      * Constructeur du vaisseau, on initialise les positions et les images, ainsi que les vies et les sons.
      *
-     * @param x Position x sur l'écran
-     * @param y Position y sur l'écran
-     * @param width Largeur de l'image
-     * @param height Hauteur de l'image
+     * @param x         Position x sur l'écran
+     * @param y         Position y sur l'écran
+     * @param width     Largeur de l'image
+     * @param height    Hauteur de l'image
      * @param imagePath Nom du fichier de l'image
      * @throws SlickException
      */

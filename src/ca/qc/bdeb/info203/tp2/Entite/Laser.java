@@ -23,10 +23,10 @@ public class Laser extends Entite {
     /**
      * Constructeur du laser, on initialise les positions et les images, ainsi que les sons.
      *
-     * @param x Position x sur l'écran
-     * @param y Position y sur l'écran
-     * @param width Largeur de l'image
-     * @param height Hauteur de l'image
+     * @param x         Position x sur l'écran
+     * @param y         Position y sur l'écran
+     * @param width     Largeur de l'image
+     * @param height    Hauteur de l'image
      * @param imagepath Nom du fichier de l'image
      */
     public Laser(float x, float y, float width, float height, String imagepath) {

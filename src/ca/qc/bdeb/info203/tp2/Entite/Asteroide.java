@@ -31,10 +31,10 @@ public class Asteroide extends Entite {
     /**
      * Constructeur de chaque asteroide créé
      *
-     * @param x Position x sur l'écran
-     * @param y Position y sur l'écran
+     * @param x               Position x sur l'écran
+     * @param y               Position y sur l'écran
      * @param tailleAsteroide La taille de l'asteroide
-     * @param direction La direction de son mouvement
+     * @param direction       La direction de son mouvement
      * @throws SlickException
      */
     public Asteroide(float x, float y, TailleAsteroide tailleAsteroide, Direction direction) throws SlickException {
