@@ -43,7 +43,7 @@ public class Jeu extends BasicGame implements Observateur {
 
     private long momentCollision;
     private long momentSpawnAsteroide;
-    private long scalingValue = 0;
+    private long scalingValueBackground = 0;
 
     public Jeu(String title) {
         super(title);
@@ -85,6 +85,9 @@ public class Jeu extends BasicGame implements Observateur {
 
     @Override
     public void update(GameContainer gameContainer, int delta) throws SlickException {
+        // FIXME: -Bug qui fait que parfois le temps d'invulnérabilité est pas respecté
+        //        -Arrive dans les parties lorsqu'on fait rejouer
+
         getTouchesMouvement();
         traiterTouchesMouvement();
 
@@ -120,7 +123,7 @@ public class Jeu extends BasicGame implements Observateur {
 
         moteurCollision.detecterCollisions(listeCollisionables);
 
-        scalingValue += SCALING_VITESSE * 2 * delta;
+        scalingValueBackground += SCALING_VITESSE * 2 * delta;
     }
 
     @Override
@@ -343,7 +346,7 @@ public class Jeu extends BasicGame implements Observateur {
 
     public void doBackground(GameContainer gc, Graphics g) {
         for (int i = 0; i < Main.WIDTH; i = i + 256) {
-            for (long j = scalingValue % 256 - 256; j < Main.HEIGHT; j = j + 256) {
+            for (long j = scalingValueBackground % 256 - 256; j < Main.HEIGHT; j = j + 256) {
                 g.drawImage(backgroundTile, i, j);
             }
         }

@@ -99,11 +99,6 @@ public class Asteroide extends Entite {
         }
     }
 
-    @Override
-    public void gererCollision(Collisionable objetEnCollision, Direction directionCollision) {
-
-    }
-
     public boolean isSeparer() {
         return isSeparer;
     }

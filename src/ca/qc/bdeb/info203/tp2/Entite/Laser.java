@@ -55,9 +55,4 @@ public class Laser extends Entite {
             detruire = true;
         }
     }
-
-    @Override
-    public void gererCollision(Collisionable objetEnCollision, Direction directionCollision) {
-
-    }
 }

@@ -36,28 +36,6 @@ public class Bordure implements Collisionable, Mur {
     }
 
     @Override
-    public void gererCollision(Collisionable objetEnCollision, Direction directionCollision) {
-        if (objetEnCollision instanceof Vaisseau) {
-            Vaisseau vaisseau = (Vaisseau) objetEnCollision;
-            switch (directionCollision) {
-                case UP:
-                    vaisseau.setLocation(vaisseau.getX(), 0f);
-                    break;
-                case LEFT:
-                    vaisseau.setLocation(0f, vaisseau.getY());
-                    break;
-                case DOWN:
-                    vaisseau.setLocation(vaisseau.getX(), Main.HEIGHT - vaisseau.getHeight());
-                    break;
-                case RIGHT:
-                    vaisseau.setLocation(Main.WIDTH - vaisseau.getWidth(), vaisseau.getY());
-                    break;
-            }
-        }
-
-    }
-
-    @Override
     public Rectangle getRectangle() {
         return RECTANGLE;
     }
