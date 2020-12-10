@@ -1,8 +1,8 @@
-package ca.qc.bdeb.info203.tp2.Entite;
+package ca.qc.bdeb.info203.tp2.entites;
 
-import ca.qc.bdeb.info203.tp2.Collisionable;
-import ca.qc.bdeb.info203.tp2.Enum.Direction;
-import ca.qc.bdeb.info203.tp2.Enum.TailleAsteroide;
+import ca.qc.bdeb.info203.tp2.interfaces.Collisionable;
+import ca.qc.bdeb.info203.tp2.enums.Direction;
+import ca.qc.bdeb.info203.tp2.enums.TailleAsteroide;
 import ca.qc.bdeb.info203.tp2.Jeu;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;

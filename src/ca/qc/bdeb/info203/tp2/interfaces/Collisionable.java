@@ -1,4 +1,4 @@
-package ca.qc.bdeb.info203.tp2;
+package ca.qc.bdeb.info203.tp2.interfaces;
 
 import java.awt.*;
 
