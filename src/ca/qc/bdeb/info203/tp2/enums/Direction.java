@@ -1,4 +1,4 @@
-package ca.qc.bdeb.info203.tp2.Enum;
+package ca.qc.bdeb.info203.tp2.enums;
 
 /**
  * Directions qui peuvent être utilisées

@@ -1,4 +1,4 @@
-package ca.qc.bdeb.info203.tp2;
+package ca.qc.bdeb.info203.tp2.interfaces;
 
 /**
  * Interface qui définit le contrat de l'Observateur dans le Patron Observer
