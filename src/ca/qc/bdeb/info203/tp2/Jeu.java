@@ -34,6 +34,8 @@ public class Jeu extends BasicGame implements Observateur {
 
     private GameContainer gc;
     private Input input;
+
+    private Sound bgMusic;
     private Sound gameOverSound;
     private boolean gameOver;
 
@@ -64,8 +66,9 @@ public class Jeu extends BasicGame implements Observateur {
         this.listeEntiteCrees.clear();
         this.listeEntiteDetruites.clear();
 
+        bgMusic = new Sound("res/Sounds/sfx_bgMusic.wav");
+        bgMusic.loop();
 
-        //TODO: Background music
         gameOverSound = new Sound("res/Sounds/sfx_lose.wav");
         gameOver = false;
 
@@ -155,8 +158,8 @@ public class Jeu extends BasicGame implements Observateur {
             doGameOver();
         }
 
-        g.drawString("Minerai dans le vaisseau: " + String.valueOf(vaisseau.getCargo().getCargaisonVaisseau()) + " / " + vaisseau.getCargo().getCargaisonVaisseauMax(), 10, 84);
-        g.drawString("Minerai envoyé sur Mars: " + String.valueOf(vaisseau.getCargo().getCargaisonMars()), 10, 104);
+        g.drawString("Minerai dans le vaisseau: " + vaisseau.getCargo().getCargaisonVaisseau() + " / " + vaisseau.getCargo().getCargaisonVaisseauMax(), 10, 84);
+        g.drawString("Minerai envoyé sur Mars: " + vaisseau.getCargo().getCargaisonMars(), 10, 104);
     }
 
     public void dessinerCoeurs() {
