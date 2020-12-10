@@ -9,7 +9,7 @@ public enum TailleAsteroide {
 
     public final int valeurNumerique;
 
-    private TailleAsteroide(int valeurNumerique) {
+    TailleAsteroide(int valeurNumerique) {
         this.valeurNumerique = valeurNumerique;
     }
 

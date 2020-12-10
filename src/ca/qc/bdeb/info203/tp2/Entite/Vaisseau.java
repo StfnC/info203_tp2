@@ -6,19 +6,32 @@ import org.newdawn.slick.*;
 
 import java.util.ArrayList;
 
+/**
+ * Classe qui gère l'entité de type Vaisseau
+ */
 public class Vaisseau extends Entite implements Observable {
     private static final int VITESSE_VAISSEAU = 7;
 
-    private Sound shieldDown;
-    private Cargo cargo;
+    private final Sound shieldDown;
+    private final Cargo cargo;
     private int lives;
     private boolean vulnerable = true;
     private boolean peutTirer = true;
     private boolean peutSeDeplacer = true;
     private boolean seDeplace = false;
     private Direction direction;
-    private ArrayList<Observateur> observateurs = new ArrayList<>();
+    private final ArrayList<Observateur> observateurs = new ArrayList<>();
 
+    /**
+     * Constructeur du vaisseau, on initialise les positions et les images, ainsi que les vies et les sons.
+     *
+     * @param x Position x sur l'écran
+     * @param y Position y sur l'écran
+     * @param width Largeur de l'image
+     * @param height Hauteur de l'image
+     * @param imagePath Nom du fichier de l'image
+     * @throws SlickException
+     */
     public Vaisseau(float x, float y, float width, float height, String imagePath) throws SlickException {
         super(x, y, width, height, imagePath);
         this.cargo = new Cargo(this);
@@ -26,6 +39,9 @@ public class Vaisseau extends Entite implements Observable {
         shieldDown = new Sound("res/Sounds/sfx_shieldDown.wav");
     }
 
+    /**
+     * Méthode responsable du déplacement du vaisseau selon la direction
+     */
     @Override
     public void deplacer(int delta) {
         if (seDeplace && peutSeDeplacer) {
@@ -46,6 +62,9 @@ public class Vaisseau extends Entite implements Observable {
         }
     }
 
+    /**
+     * On enlève une vie grâce à cette méthode et on joue le son associé.
+     */
     public void enleverVie() {
         if (lives > 1) {
             shieldDown.play();
@@ -53,6 +72,11 @@ public class Vaisseau extends Entite implements Observable {
         lives--;
     }
 
+    /**
+     * On gère la collision différemment selon le type d'entité avec lequel on collisionne.
+     *
+     * @param objetEnCollision L'objet avec lequel on collisionne
+     */
     @Override
     public void gererCollision(Collisionable objetEnCollision) {
         if (objetEnCollision instanceof Asteroide) {
@@ -67,23 +91,39 @@ public class Vaisseau extends Entite implements Observable {
         }
     }
 
+    /**
+     * Méthode pour retourner les vies du vaisseau.
+     */
     public int getLives() {
         return this.lives;
     }
 
+    /**
+     * Vérifier si le vaisseau est vulnérable
+     */
     public boolean getVulnerable() {
         return this.vulnerable;
     }
 
+    /**
+     * Setter pour le boolean Vulnerable
+     */
     public void setVulnerable(boolean vulnerable) {
         this.vulnerable = vulnerable;
     }
 
+
+    /**
+     * Ajout simple de l'observateur à l'entité
+     */
     @Override
     public void addObservateur(Observateur observateur) {
         this.observateurs.add(observateur);
     }
 
+    /**
+     * On gère la liste des observateurs et mettons à jour les temps de chaque entité
+     */
     @Override
     public void updateObservateurs() {
         for (Observateur observateur : observateurs) {
@@ -91,38 +131,44 @@ public class Vaisseau extends Entite implements Observable {
         }
     }
 
-    public boolean getSeDeplace() {
-        return seDeplace;
-    }
-
+    /**
+     * Setter pour le boolean seDeplace
+     */
     public void setSeDeplace(boolean seDeplace) {
         this.seDeplace = seDeplace;
     }
 
-    public Direction getDirection() {
-        return direction;
-    }
-
+    /**
+     * Setter pour la direction du vaisseau
+     */
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
 
-    public boolean getPeutSeDeplacer() {
-        return peutSeDeplacer;
-    }
-
+    /**
+     * Setter pour le boolean peutSeDeplacer
+     */
     public void setPeutSeDeplacer(boolean peutSeDeplacer) {
         this.peutSeDeplacer = peutSeDeplacer;
     }
 
+    /**
+     * Getter pour le boolean peutTirer
+     */
     public boolean getPeutTirer() {
         return peutTirer;
     }
 
+    /**
+     * Setter pour le boolean peutTirer
+     */
     public void setPeutTirer(boolean peutTirer) {
         this.peutTirer = peutTirer;
     }
 
+    /**
+     * Getter pour la cargaison de ce vaisseau spécifique
+     */
     public Cargo getCargo() {
         return cargo;
     }

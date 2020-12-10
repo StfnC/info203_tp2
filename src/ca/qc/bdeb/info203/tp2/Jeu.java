@@ -126,6 +126,13 @@ public class Jeu extends BasicGame implements Observateur {
         scalingValueBackground += SCALING_VITESSE * 2 * delta;
     }
 
+    /**
+     * On dessine le background avec doBackground.
+     * On dessine toutes les entités dans listeEntites.
+     * On vérifie la collision du vaisseau et le dessine avec drawFlash() si c'est le cas.
+     * On dessine les coeurs si le vaisseau est vivant, sinon on dessine le message du Game Over.
+     * Finalement, on dessine le score sur l'écran.
+     */
     @Override
     public void render(GameContainer gameContainer, Graphics g) {
 
@@ -159,6 +166,9 @@ public class Jeu extends BasicGame implements Observateur {
         g.drawString("Minerai envoyé sur Mars: " + vaisseau.getCargo().getCargaisonMars(), 10, 104);
     }
 
+    /**
+     * Change le boolean detruire si les entités sont en dehors de l'écran
+     */
     private void nettoyerAsteroidesHorsEcran() {
         for (Entite entite : listeEntites) {
             if (entite instanceof Asteroide) {
@@ -172,6 +182,9 @@ public class Jeu extends BasicGame implements Observateur {
         }
     }
 
+    /**
+     * Méthode en charge du dessin des vies du vaisseau restantes
+     */
     public void dessinerCoeurs() {
         for (int i = 0; i < vaisseau.getLives(); i++) {
             heart.draw(ESPACE_ENTRE_COEURS + (heart.getWidth() + ESPACE_ENTRE_COEURS) * i, 10);
@@ -316,6 +329,11 @@ public class Jeu extends BasicGame implements Observateur {
         asteroide.setLocation(posX, posY);
     }
 
+    /**
+     * On définit la position des deux nouveaux astéroïdes et on les crée en les ajoutant à listeEntiteCrees
+     *
+     * @param asteroide L'asteroide à séparer
+     */
     public void separerAsteroide(Asteroide asteroide) throws SlickException {
         if (!asteroide.getTailleAsteroide().equals(TailleAsteroide.TRES_PETIT)) {
             float positionXAst1 = asteroide.getX() - asteroide.getWidth() / 8;
@@ -335,6 +353,9 @@ public class Jeu extends BasicGame implements Observateur {
         }
     }
 
+    /**
+     * Méthode qui gère le son du GameOver et qui empeche l'utilisateur d'interragir avec le vaisseau
+     */
     public void doGameOver() {
         if (!gameOver) {
             gameOverSound.play();
@@ -344,6 +365,12 @@ public class Jeu extends BasicGame implements Observateur {
         }
     }
 
+    /**
+     * Méthode qui utilise les modulos pour s'assurer que l'écran est toujours rempli avec bgTile
+     *
+     * @param gc Envoyé à partir de render pour s'assurer que l'on peut afficher sur l'écran en dehors de la méthode render()
+     * @param g Permet de dessiner sur l'écran
+     */
     public void doBackground(GameContainer gc, Graphics g) {
         for (int i = 0; i < Main.WIDTH; i = i + 256) {
             for (long j = scalingValueBackground % 256 - 256; j < Main.HEIGHT; j = j + 256) {
