@@ -114,8 +114,6 @@ public class Jeu extends BasicGame implements Observateur {
      */
     @Override
     public void update(GameContainer gameContainer, int delta) throws SlickException {
-        // FIXME: -Bug qui fait que parfois le temps d'invulnérabilité est pas respecté
-        //        -Arrive dans les parties lorsqu'on fait rejouer
         long tempsActuel = System.currentTimeMillis();
 
         getTouchesMouvement();
